@@ -1,0 +1,16 @@
+body.mainpage, body.subback { background: #ba9 url('ba.png') fixed; }
+div.thread_list, div.thread, div#threadform, table
+{ border: 4px double black;
+  padding: 0.5em;
+  margin: 0.5em; }
+.threadlinks { text-align: right; }
+.thread_list, #threadform, table { background: #cfc; }
+.thread { background: #eee; }
+.thread_head a { color: red; }
+.thread_head { font-size: large; }
+.post_head { font-size: small; }
+.post { margin: 1em; }
+th, td { border: 1px solid black; }
+textarea
+{ height: 10em;
+  width: 40em; } 

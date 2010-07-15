@@ -1,0 +1,20 @@
+Options ExecCGI FollowSymLinks Indexes
+
+Allow from all
+
+AddDefaultCharset utf-8
+AddOutputFilterByType DEFLATE text/html text/plain application/json application/rss+xml
+
+RewriteEngine on
+RewriteBase /tinybb3
+RewriteRule ^(read|json)(/\d+)/+(0*1?-0*([1-9]\d{3,})?|l0*([1-9]\d{3,})?)?$ ./$1$2 [L]
+RewriteRule ^(read|json)(/\d+/.*,.*)$ ./$1.pl$2 [L]
+RewriteRule ^(read|json)(/\d+/+(\d*-?\d*|l\d+))$ ./$1.pl$2 [L]
+RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
+
+<Files ????.txt>
+ Deny from all
+</Files>
+<Files build_index.sh>
+ Deny from all
+</Files>

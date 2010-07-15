@@ -1,0 +1,3 @@
+Options -Indexes
+DefaultType text/html
+ForceType text/html

@@ -1,0 +1,3 @@
+Options -Indexes
+ForceType application/json
+DirectoryIndex index.json
