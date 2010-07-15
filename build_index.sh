@@ -37,7 +37,7 @@ read=${basename}read
    echo -n ',{"id":"'$thread'","title":"'$(cat $title|sed -E 's/(\\|")/\\\1/g')'","created":"'$(stat -f %m threads/$thread/posts/1)'","length":"'$(echo $(ls threads/$thread/posts | wc -l))'","updated":"'$(stat -f %m threads/$thread/posts)'","bumped":"'$(stat -f %m $title)'"}'
   done
  ) | tail -c+2
- echo -n ']'
+ echo ']'
 ) > json/index.json
 
 # build gophermap in threads/
