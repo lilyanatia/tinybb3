@@ -40,17 +40,17 @@ read=${basename}read
  echo -n ']'
 ) > json/index.json
 
-# build .names in threads/
+# build gophermap in threads/
 (
+ echo anonymous bbs
+ echo
  for title in $(ls -t threads/*/title)
  do
   thread=$(echo $title | cut -d/ -f2)
   length=$(echo $(ls threads/$thread/posts | wc -l))
-  echo Name=$(cat $title) \($length\)
-  echo Path=./$thread
-  echo
+  echo '1'$(cat $title | sed 's/	/    /g')' ('$length')	'$thread
  done
-) > threads/.names
+) > threads/gophermap
 
 # build
 #  json in json/
@@ -58,7 +58,7 @@ read=${basename}read
 #  atom in atom/
 #  gophermaps in threads/
 stylesheet=${basename}style.css
-for thread in $(ls threads)
+for thread in $(ls threads | grep -Fv gophermap)
 do
  title=$(cat threads/$thread/title)
  if [ ! -e json/$thread -o json/$thread -ot threads/$thread/posts ]
