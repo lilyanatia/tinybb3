@@ -23,7 +23,7 @@ if($query->request_method() == 'POST')
   my $comment = $query->param('comment');
   die 'spam filter triggered' if filter_check('spam.txt', $comment);
   $sage = 1 if filter_check('sage.txt', $comment);
-  make_thread($title) unless $thread;
+  $thread = make_thread($title) unless $thread;
   add_post($thread, $sage, $comment); }
 system BUILD_INDEX;
 print $query->redirect(-uri => full_path(HTML_INDEX), -status => 303);
