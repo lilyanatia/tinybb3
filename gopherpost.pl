@@ -5,8 +5,6 @@ use Encode qw(decode);
 use encoding 'utf8';
 use open ':utf8';
 use Fcntl qw(:flock);
-use CGI;
-use CGI::Carp qw(fatalsToBrowser);
 
 use constant BUILD_INDEX => './build_index.sh';
 use constant HTML_INDEX => 'index.html';
@@ -14,19 +12,41 @@ use constant NAME_MAX => 64;
 use constant TITLE_MAX => 256;
 use constant COMMENT_MAX => 8192;
 
-my $query = new CGI;
-my $script_name = $query->script_name();
-if($query->request_method() == 'POST')
-{ my $thread = $query->param('thread');
-  my $title = $query->param('title');
-  my $sage = $query->param('sage');
-  my $comment = $query->param('comment');
-  die 'spam filter triggered' if filter_check('spam.txt', $comment);
+my $script_name='';
+open my $htaccess, '<', '.htaccess';
+flock $htaccess, LOCK_SH;
+while(<$htaccess>)
+{ $script_name = $1 if $_ =~ /^RewriteBase\w+(.*)$/; }
+flock $htaccess, LOCK_UN;
+close $htaccess;
+my $thread = 0;
+my $title = '';
+if($ENV{SELECTOR}) =~ /\/gopherpost.pl$/)
+{ $title = $ENV{SEARCHREQUEST};
+  $thread  = make_thread($title); }
+else
+{ my $comment = $ENV{SEARCHREQUEST};
+  my $sage = 1;
+  $ENV{SELECTOR}) =~ /\/(\d+)\/(bump|reply)$/;
+  my $thread = $1;
+  open my $titlefile, '<', "threads/$thread/title";
+  flock $titlefile, LOCK_SH;
+  $title = <$titlefile>;
+  flock $titlefile, LOCK_UN;
+  close $titlefile;
+  chomp $title;
+  chdir '../..';
+  if(filter_check('spam.txt', $comment))
+  { print "3spam filter triggered\n";
+    exit; }
+  $sage = 0 if $2 == 'bump';
   $sage = 1 if filter_check('sage.txt', $comment);
-  $thread = make_thread($title) unless $thread;
   add_post($thread, $sage, $comment); }
+$ENV{SCRIPT_NAME} = $script_name;
 system BUILD_INDEX;
-print $query->redirect(-uri => full_path(HTML_INDEX), -status => 303);
+my $len = length glob "threads/$thread/posts/*";
+$title =~ s/	/    /g;
+print "1$title ($len)	threads/$thread\n";
 
 sub filter_check($$)
 { my ($file, $comment) = @_;
@@ -62,7 +82,9 @@ sub make_thread($)
   $title = clean_string($title);
   $title =~ s/\r\n/\n/g;
   $title =~ s/[\r\n]/ /g;
-  die 'no title entered!' unless $title;
+  if(!$title)
+  { print "3no title entered!\n";
+    exit; }
   mkdir "threads/$thread";
   mkdir "threads/$thread/posts";
   open my $titlefile, '>', "threads/$thread/title";
@@ -74,13 +96,16 @@ sub make_thread($)
 
 sub add_post($$$)
 { my ($thread, $sage, $comment) = @_;
-  die 'no comment entered!' unless $comment;
-  die 'thread does not exist!' unless -d "threads/$thread";
+  if(!$comment)
+  { print "3no comment entered!\n";
+    exit; }
   $comment = clean_string($comment);
   $comment =~ s/\r\n/\n/g;
   my @posts = glob("threads/$thread/posts/*");
   my $num = 1 + scalar @posts;
-  die 'this thread has been closed.' if $num > 1000;
+  if($num > 1000)
+  { print "3this thread has been closed.\n";
+    exit; }
   utime undef, undef, "threads/$thread/title" unless $sage or -f "threads/$thread/permasage";
   open my $postfile, ">", "threads/$thread/posts/$num";
   flock $postfile, LOCK_EX;

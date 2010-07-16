@@ -30,7 +30,7 @@ read=${basename}read
 # build json index
  ./json.pl > json/index.json
 
-# build gophermap in threads/
+# build main gophermap
 (
  echo anonymous bbs
  echo
@@ -38,9 +38,11 @@ read=${basename}read
  do
   thread=$(echo $title | cut -d/ -f2)
   length=$(echo $(ls threads/$thread/posts | wc -l))
-  echo '1'$(cat $title | sed 's/	/    /g')' ('$length')	'$thread
+  echo '1'$(cat $title | sed 's/	/    /g')' ('$length')	threads/'$thread
  done
-) > threads/gophermap
+ echo
+ echo '7new thread	gopherpost.pl'
+) > gophermap
 
 # build
 #  json in json/
@@ -48,7 +50,7 @@ read=${basename}read
 #  atom in atom/
 #  gophermaps in threads/
 stylesheet=${basename}style.css
-for thread in $(ls threads | grep -Fv gophermap)
+for thread in $(ls threads)
 do
  title=$(cat threads/$thread/title)
  if [ ! -e json/$thread -o json/$thread -ot threads/$thread/posts ]
@@ -87,14 +89,25 @@ do
  if [ ! -e threads/$thread/gophermap -o threads/$thread/gophermap -ot threads/$thread/posts ]
  then
  (
-  echo $title | sed 's/	/    /g' | fold -w 67
-  for post in $(ls -t threads/$thread/posts)
+  echo $title | sed 's/	/    /g' | fold -sw 67
+  for post in $(ls -tr threads/$thread/posts)
   do
    echo
    echo 0$post'	'posts/$post
-   cat threads/$thread/posts/$post | sed 's/	/    /g' | fold -w 67
+   cat threads/$thread/posts/$post | sed 's/	/    /g' | fold -sw 67
   done
+  echo
+  echo '7reply	reply'
+  echo '7bump	bump'
  ) > threads/$thread/gophermap
+ fi
+ if [ ! -e threads/$thread/reply ]
+ then
+  ln -s $(realpath gopherpost.pl) threads/$thread/reply
+ fi
+ if [ ! -e threads/$thread/bump ]
+ then
+  ln -s $(realpath gopherpost.pl) threads/$thread/bump
  fi
 done
 
