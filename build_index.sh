@@ -122,7 +122,8 @@ threads=$(ls -t threads/*/title | cut -d/ -f2)
  for thread in $threads
  do
   title=$(cat threads/$thread/title)
-  echo '<li><a href="#'$thread'">'$title'</a></li>'
+  len=$(echo $(ls threads/$thread/posts | wc -l))
+  echo '<li><a href="#'$thread'">'$title' ('$len')</a></li>'
  done
  echo '</ol><div class="threadlinks">'
  echo '<a href="#threadform">new thread</a> |'
@@ -136,7 +137,7 @@ threads=$(ls -t threads/*/title | cut -d/ -f2)
   posts=$(ls -tr threads/$thread/posts)
   if [ $(echo $posts | wc -w) -gt 10 ]
   then
-   posts=$(ls -tr threads/$thread/posts | head -n1) $(ls -tr threads/$thread/posts | tail -n9)
+   posts=$(echo $(ls -tr threads/$thread/posts | head -n1) $(ls -tr threads/$thread/posts | tail -n9))
   fi
   for post in $posts
   do
