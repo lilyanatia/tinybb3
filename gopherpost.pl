@@ -21,21 +21,26 @@ flock $htaccess, LOCK_UN;
 close $htaccess;
 my $thread = 0;
 my $title = '';
-if($ENV{SELECTOR}) =~ /\/gopherpost.pl$/)
+my $path = `pwd`;
+chomp $path;
+$path .= $ENV{SELECTOR};
+$path =~ s/\/gopherpost\.pl$//;
+$path =~ s/\/threads\/\d+\/(?:bump|reply)$//;
+chdir $path;
+if($ENV{SELECTOR} =~ /\/gopherpost\.pl$/)
 { $title = $ENV{SEARCHREQUEST};
   $thread  = make_thread($title); }
 else
 { my $comment = $ENV{SEARCHREQUEST};
   my $sage = 1;
-  $ENV{SELECTOR}) =~ /\/(\d+)\/(bump|reply)$/;
-  my $thread = $1;
+  $ENV{SELECTOR} =~ /\/(\d+)\/(bump|reply)$/;
+  $thread = $1;
   open my $titlefile, '<', "threads/$thread/title";
   flock $titlefile, LOCK_SH;
   $title = <$titlefile>;
   flock $titlefile, LOCK_UN;
   close $titlefile;
   chomp $title;
-  chdir '../..';
   if(filter_check('spam.txt', $comment))
   { print "3spam filter triggered\n";
     exit; }
@@ -44,9 +49,10 @@ else
   add_post($thread, $sage, $comment); }
 $ENV{SCRIPT_NAME} = $script_name;
 system BUILD_INDEX;
-my $len = length glob "threads/$thread/posts/*";
+my @posts = glob "threads/$thread/posts/*";
+my $len = scalar @posts;
 $title =~ s/	/    /g;
-print "1$title ($len)	threads/$thread\n";
+print "1$title ($len)	/threads/$thread	$ENV{SERVER_NAME}	$ENV{SERVER_PORT}\n";
 
 sub filter_check($$)
 { my ($file, $comment) = @_;
