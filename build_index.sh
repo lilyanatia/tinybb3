@@ -28,17 +28,7 @@ read=${basename}read
 ) > subback.html
 
 # build json index
-(
- echo -n '['
- (
-  for title in $(ls -t threads/*/title)
-  do
-   thread=$(echo $title | cut -d/ -f2)
-   echo -n ',{"id":"'$thread'","title":"'$(cat $title|sed -E 's/(\\|")/\\\1/g')'","created":"'$(stat -f %m threads/$thread/posts/1)'","length":"'$(echo $(ls threads/$thread/posts | wc -l))'","updated":"'$(stat -f %m threads/$thread/posts)'","bumped":"'$(stat -f %m $title)'"}'
-  done
- ) | tail -c+2
- echo ']'
-) > json/index.json
+ ./json.pl > json/index.json
 
 # build gophermap in threads/
 (
