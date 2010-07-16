@@ -52,7 +52,10 @@ system BUILD_INDEX;
 my @posts = glob "threads/$thread/posts/*";
 my $len = scalar @posts;
 $title =~ s/	/    /g;
-print "1$title ($len)	/threads/$thread	$ENV{SERVER_NAME}	$ENV{SERVER_PORT}\n";
+my $threadpath = $ENV{SELECTOR};
+$threadpath =~ s/\/gopherpost\.pl$/\/$thread/;
+$threadpath =~ s/\/(?:bump|reply)$//;
+print "1$title ($len)	$threadpath	$ENV{SERVER_NAME}	$ENV{SERVER_PORT}\n";
 
 sub filter_check($$)
 { my ($file, $comment) = @_;
