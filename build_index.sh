@@ -1,5 +1,13 @@
 #!/bin/sh
 
+if echo $SCRIPT_NAME | grep -v 'post\.pl$'
+then
+ echo Content-type: text/plain
+ echo
+ echo don\'t do that\!
+ exit
+fi
+
 basename=$(echo $SCRIPT_NAME | sed 's/[^\/]*$//')
 read=${basename}read
 

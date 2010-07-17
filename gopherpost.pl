@@ -16,7 +16,7 @@ my $script_name='';
 open my $htaccess, '<', '.htaccess';
 flock $htaccess, LOCK_SH;
 while(<$htaccess>)
-{ $script_name = $1 if $_ =~ /^RewriteBase\w+(.*)$/; }
+{ $script_name = "$1/post.pl" if $_ =~ /^RewriteBase\w+(.*)$/; }
 flock $htaccess, LOCK_UN;
 close $htaccess;
 my $thread = 0;
