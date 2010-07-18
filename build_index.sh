@@ -16,7 +16,7 @@ read=${basename}read
  for title in $(ls -t threads/*/title)
  do
   thread=$(echo $title | cut -d/ -f2)
-  echo "$(sed 's/&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g' $title)<>Anonymous<><>$thread<>$(echo $(ls threads/$thread/posts | wc -l))<>Anonymous<>$(stat -f %m threads/$thread/posts)"
+  echo "$(cat $title)<>Anonymous<><>$thread<>$(echo $(ls threads/$thread/posts | wc -l))<>Anonymous<>$(stat -f %m threads/$thread/posts)"
  done
 ) > subject.txt
 
