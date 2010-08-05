@@ -9,6 +9,9 @@ use CGI;
 use CGI::Carp qw(fatalsToBrowser);
 use JSON;
 
+my $query = new CGI;
+my $jsonp = $query->param('jsonp');
+
 if($ENV{PATH_INFO})
 { die 'invalid request!' unless $ENV{PATH_INFO} =~ /^\/(\d+)(?:\/(.*))?$/;
   my ($thread, $selection) = ($1,$2);
@@ -35,7 +38,10 @@ if($ENV{PATH_INFO})
         when (/^l(\d+)$/) { last_json($json_data, $thread, $1); }
         default { range_json($json_data, $thread, 1, 1000); }}}}
   else { range_json($json_data, $thread, 1, 1000); }
-  print $json->encode($json_data), "\n"; }
+  print "$jsonp(" if $jsonp;
+  print $json->encode($json_data);
+  print ')' if $jsonp;
+  print "\n"; }
 else
 { my @threads = map { substr $_, 8 } sort { (stat "$b/title")[9] <=> (stat "$a/title")[9] } glob 'threads/{1,2,3,4,5,6,7,8,9,0}*';
   my $json = new JSON;
@@ -45,7 +51,10 @@ else
         flock $titlefile, LOCK_UN;
         close $titlefile;
         { 'id' => $_, 'title' => $title, 'created' => (stat "threads/$_/posts/1")[9], 'length' => length(glob "threads/$_/posts/*"), 'updated' => (stat "threads/$_/posts")[9], 'bumped' => (stat "threads/$_/title")[9]} } @threads;
-  print $json->encode(\@json_data), "\n"; }
+  print "$jsonp(" if $jsonp;
+  print $json->encode(\@json_data);
+  print ')' if $jsonp;
+  print "\n"; }
 
 sub post_json($$$)
 { my ($json_data, $thread, $post) = @_;
