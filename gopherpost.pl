@@ -2,7 +2,6 @@
 
 use strict;
 use Encode qw(decode);
-use encoding 'utf8';
 use open ':utf8';
 use Fcntl qw(:flock);
 
