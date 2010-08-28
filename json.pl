@@ -2,12 +2,12 @@
 
 use strict;
 use feature 'switch';
-use encoding 'utf8';
 use open ':utf8';
 use Fcntl qw(:flock);
 use CGI;
 use CGI::Carp qw(fatalsToBrowser);
-use JSON;
+
+BEGIN { require 'json-common.pl'; }
 
 my $query = new CGI;
 my $jsonp = $query->param('jsonp');

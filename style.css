@@ -5,7 +5,7 @@ div.thread_list, div.thread, div#threadform, table
   margin: 0.5em; }
 .threadlinks { text-align: right; }
 .thread_list, #threadform, table { background: #cfc; }
-.thread_list * li { display: inline; counter-increment: threads; }
+.thread_list * li { display: inline; counter-increment: threads; padding-right: 0.5em; }
 .thread_list * li:before { content: counter(threads) ". "; }
 .thread { background: #eee; }
 .thread_head a { color: red; }
