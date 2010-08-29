@@ -234,7 +234,7 @@ sub build_index($)
                      '</a></div>';
     post_html($threads[$_], 1, $indexfile);
     range_html($threads[$_], $lengths[$_] > 10 ? $lengths[$_] - 8 : 2 ,
-               $lengths[$_], $indexfile);
+               $lengths[$_], $indexfile) if $lengths[$_] > 1;
     print $indexfile '<div class="replyform"><form method="post" action="',
                      full_path('post.pl'), '"><input type="hidden" name="threa',
                      "d\" value=\"$threads[$_]\"><input type=\"checkbox\" id=",
