@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use feature 'switch';
@@ -12,7 +12,9 @@ BEGIN { require 'json-common.pl'; }
 my $query = new CGI;
 my $jsonp = $query->param('jsonp');
 
-if($ENV{PATH_INFO})
+print "Content-type: application/json; charset=utf-8\n\n";
+
+if($ENV{PATH_INFO} and $ENV{PATH_INFO} !~ /^\/+$/)
 { die 'invalid request!' unless $ENV{PATH_INFO} =~ /^\/(\d+)(?:\/(.*))?$/;
   my ($thread, $selection) = ($1,$2);
   open my $titlefile, '<', "threads/$thread/title";
@@ -23,7 +25,6 @@ if($ENV{PATH_INFO})
   $title =~ s/&/&amp;/g;
   $title =~ s/</&lt;/g;
   $title =~ s/>/&gt;/g;
-  print "Content-type: application/json; charset=utf-8\n\n";
   $selection = '' unless $selection =~ /^(?:\d*(?:-\d*)?|l\d+)(?:,(?:\d*(?:-\d*)?|l\d+))*$/;
   my @ranges = split /,/, $selection;
   my $json = new JSON;
@@ -38,48 +39,23 @@ if($ENV{PATH_INFO})
         when (/^l(\d+)$/) { last_json($json_data, $thread, $1); }
         default { range_json($json_data, $thread, 1, 1000); }}}}
   else { range_json($json_data, $thread, 1, 1000); }
-  print "$jsonp(" if $jsonp;
-  print $json->encode($json_data);
-  print ')' if $jsonp;
-  print "\n"; }
+  my $json_string = $json->encode($json_data);
+  $json_string = "$jsonp($json_string)" if $jsonp;
+  print "$json_string\n"; }
 else
 { my @threads = map { substr $_, 8 } sort { (stat "$b/title")[9] <=> (stat "$a/title")[9] } glob 'threads/{1,2,3,4,5,6,7,8,9,0}*';
   my $json = new JSON;
   my @json_data = map { open my $titlefile, '<', "threads/$_/title";
-        flock $titlefile, LOCK_SH;
-        my $title = <$titlefile>;
-        flock $titlefile, LOCK_UN;
-        close $titlefile;
-        { 'id' => $_, 'title' => $title, 'created' => (stat "threads/$_/posts/1")[9], 'length' => length(glob "threads/$_/posts/*"), 'updated' => (stat "threads/$_/posts")[9], 'bumped' => (stat "threads/$_/title")[9]} } @threads;
-  print "$jsonp(" if $jsonp;
-  print $json->encode(\@json_data);
-  print ')' if $jsonp;
-  print "\n"; }
-
-sub post_json($$$)
-{ my ($json_data, $thread, $post) = @_;
-  if(-f "threads/$thread/posts/$post")
-  { my $time = (stat "threads/$thread/posts/$post")[9];
-    open my $postfile, '<', "threads/$thread/posts/$post";
-    flock $postfile, LOCK_SH;
-    my $comment = join '', <$postfile>;
-    flock $postfile, LOCK_UN;
-    close $postfile;
-    $comment =~ s/\\/\\\\/g;
-    $comment =~ s/"/\\"/g;
-    chomp $comment;
-    $$json_data{$post} = {"name" => "Anonymous", "now" => $time, "com" => $comment}; }}
-
-sub range_json($$$$)
-{ my ($json_data, $thread, $start, $end) = @_;
-  $start = 1000 if $start > 1000;
-  $end = 1000 if $end > 1000;
-  my @posts = $start > $end ? reverse $end..$start : $start..$end;
-  post_json($json_data, $thread, $_) for @posts; }
-
-sub last_json($$$)
-{ my ($json_data, $thread, $count) = @_;
-  my $thread_length = length glob "threads/$thread/posts/*";
-  my $start = 1 + $thread_length - $count;
-  $start = 1 if $start < 1;
-  range_json($json_data, $thread, $start, 1000); }
+                        flock $titlefile, LOCK_SH;
+                        my $title = <$titlefile>;
+                        flock $titlefile, LOCK_UN;
+                        close $titlefile;
+                        my @posts = glob "threads/$_/posts/*";
+                        { 'id' => $_, 'title' => $title,
+                          'created' => (stat "threads/$_/posts/1")[9],
+                          'length' => scalar @posts,
+                          'updated' => (stat "threads/$_/posts")[9],
+                          'bumped' => (stat "threads/$_/title")[9] } } @threads;
+  my $json_string = $json->encode(\@json_data);
+  $json_string = "$jsonp($json_string)" if $jsonp;
+  print "$json_string\n"; }

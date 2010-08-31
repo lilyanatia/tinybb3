@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use Encode qw(decode);
@@ -208,7 +208,7 @@ sub build_index($)
   # build index.html
   my @all = sort { (stat $b)[9] <=> (stat $a)[9] } glob 'threads/*/title';
   my $last_thread = (scalar @all) > 9 ? 9 : (scalar @all) - 1;
-  my @threads = map { s/^.*\/([^\/]+)\/title$/$1/; $_ } @all[0..$last_thread];
+  my @threads = map { substr $_, 8, -6 } @all[0..$last_thread];
   my @titles = map { open $titlefile, '<', "threads/$_/title";
                      flock $titlefile, LOCK_SH;
                      $title = <$titlefile>;
@@ -229,9 +229,9 @@ sub build_index($)
                    'read</a> | <a href="subback.html">all threads</a></div></d',
                    'iv>';
   for (0..$last_thread)
-  { print $indexfile "<div class=\"thread\" id=\"$thread\"><div class=\"thread",
-                     '_head"><a href="', full_path("read/$thread"), "\">$title",
-                     '</a></div>';
+  { print $indexfile "<div class=\"thread\" id=\"$threads[$_]\"><div class=\"t",
+                     'hread_head"><a href="', full_path("read/$thread"), '">',
+                     "$titles[$_] ($lengths[$_])</a></div>";
     post_html($threads[$_], 1, $indexfile);
     range_html($threads[$_], $lengths[$_] > 10 ? $lengths[$_] - 8 : 2 ,
                $lengths[$_], $indexfile) if $lengths[$_] > 1;
