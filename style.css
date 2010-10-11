@@ -5,12 +5,13 @@ div.thread_list, div.thread, div#threadform, table
   margin: 0.5em; }
 .threadlinks { text-align: right; }
 .thread_list, #threadform, table { background: #cfc; }
-.thread_list * li { display: inline; counter-increment: threads; padding-right: 0.5em; }
+.thread_list * li { display: inline; counter-increment: threads; }
 .thread_list * li:before { content: counter(threads) ". "; }
 .thread { background: #eee; }
 .thread_head a { color: red; }
 .thread_head { font-size: large; }
 .post_head { font-size: small; }
+.comment { padding-left: 2em; }
 .post { margin: 1em; }
 th, td { border: 1px solid black; }
 textarea
