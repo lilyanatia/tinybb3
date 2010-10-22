@@ -5,6 +5,8 @@ Allow from all
 AddDefaultCharset utf-8
 AddOutputFilterByType DEFLATE text/html text/plain application/json application/rss+xml
 
+SetEnv base /tinybb3
+
 RewriteEngine on
 RewriteBase /tinybb3
 RewriteCond "%{QUERY_STRING}" ^jsonp=
@@ -19,4 +21,8 @@ RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
 </Files>
 <Files build_index.sh>
  Deny from all
+</Files>
+<Files trip.js>
+ Options +Includes
+ AddOutputFilter INCLUDES .js
 </Files>

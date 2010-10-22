@@ -34,8 +34,16 @@ sub clean_string($)
   $str =~ s/[\x{d800}-\x{dfff}]//g;
   $str =~ s/[\x{202a}-\x{202e}]//g;
   $str =~ s/[\x{fdd0}-\x{fdef}\x{fffe}\x{ffff}\x{1fffe}\x{1ffff}\x{2fffe}\x{2ffff}\x{3fffe}\x{3ffff}\x{4fffe}\x{4ffff}\x{5fffe}\x{5ffff}\x{6fffe}\x{6ffff}\x{7fffe}\x{7ffff}\x{8fffe}\x{8ffff}\x{9fffe}\x{9ffff}\x{afffe}\x{affff}\x{bfffe}\x{bffff}\x{cfffe}\x{cffff}\x{dfffe}\x{dffff}\x{efffe}\x{effff}\x{ffffe}\x{fffff}]//g;
-  $str = join('', map{$_ < 0x10fffe ? $_ : ''} split(//, $str));
-  return $str; }
+  return join('', map{$_ < 0x10fffe ? $_ : ''} split(//, $str)); }
+
+sub do_trip($)
+{ my ($pass) = @_;
+  $pass = encode 'sjis', $pass, 0x0200;
+  $pass = clean_string($pass);
+  my $salt = substr $pass.'H..', 1, 2;
+  $salt =~ s/[^\.-z]/./g;
+  $salt =~ tr/:;<=>?@[\\]^_`/ABCDEFGabcdef/;
+  return substr crypt($pass, $salt), -10; }
 
 sub make_thread($)
 { my ($title) = @_;
@@ -54,8 +62,8 @@ sub make_thread($)
   build_index($thread) if $gopher;
   return $thread; }
 
-sub add_post($$$)
-{ my ($thread, $sage, $comment) = @_;
+sub add_post($$$$)
+{ my ($thread, $sage, $comment, $pass) = @_;
   error('no comment entered!') unless $comment;
   error('thread does not exist!') unless -d "threads/$thread";
   $comment = clean_string($comment);
@@ -69,6 +77,12 @@ sub add_post($$$)
   print $postfile "$comment\n";
   flock $postfile, LOCK_UN;
   close $postfile;
+  if($pass)
+  { open my $tripfile, '>', "threads/$thread/posts/.$num.trip";
+    flock $tripfile, LOCK_EX;
+    print $tripfile do_trip($pass);
+    flock $tripfile, LOCK_UN;
+    close $tripfile; }
   build_index($thread); }
 
 sub build_index($)
@@ -96,9 +110,10 @@ sub build_index($)
   print $htmlfile "<!DOCTYPE html>\n<html><head><title>$title</title><link rel",
                   "=\"stylesheet\" type=\"text/css\" href=\"",
                   full_path('style.css'), '"><link rel="alternate" type="appli',
-                  'cation/atom+xml" href=', full_path("atom/$thread"), '</head',
-                  '><body class="thread"><div class="thread_head"><a href="rea',
-                  "d/$thread\">$title</a></div>";
+                  'cation/atom+xml" href=', full_path("atom/$thread"), '<scrip',
+                  't type="text/javascript" src="', full_path('trip.js'), '</s',
+                  'cript></head><body class="thread" onload="init()"><div clas',
+                  "s=\"thread_head\"><a href=\"read/$thread\">$title</a></div>";
   range_html($thread, 1, 1000, $htmlfile);
   flock $htmlfile, LOCK_UN;
   close $htmlfile;
@@ -218,10 +233,11 @@ sub build_index($)
   my @lengths = map { my @p = glob "threads/$_/posts/*"; scalar @p } @threads;
   open my $indexfile, '>', 'index.html';
   flock $indexfile, LOCK_EX;
-  print $indexfile "<!DOCTYPE html>\n<html><head><title>anonymous bbs</title><l",
-                  'ink rel="stylesheet" type="text/css" href="',
-                  full_path('style.css'), '"></head><body class="mainpage"><di',
-                  'v class="thread_list"><ol>';
+  print $indexfile "<!DOCTYPE html>\n<html><head><title>anonymous bbs</title><",
+                  'link rel="stylesheet" type="text/css" href="',
+                  full_path('style.css'), '"><script type="text/javascript" sr',
+                  'c="', full_path('trip.js'), '"></script></head><body class=',
+                  '"mainpage" onload="init()"><div class="thread_list"><ol>';
   for (0..$last_thread)
   { print $indexfile "<li><a href=\"#$threads[$_]\">$titles[$_] ($lengths[$_])",
                      '</a></li>'; }

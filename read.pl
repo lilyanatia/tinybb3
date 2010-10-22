@@ -24,8 +24,10 @@ $title =~ s/>/&gt;/g;
 print "Content-type: text/html; charset=utf-8\n\n<!DOCTYPE html>\n<html><head>",
       "<title>$title</title><link rel=\"stylesheet\" type=\"text/css\" href=\"",
       full_path('style.css'), '"><link rel="alternate" type="application/atom+',
-      'xml" href=', full_path("atom/$thread"), '</head><body class="thread"><d',
-      "iv class=\"thread_head\"><a href=\"read/$thread\">$title</a></div>";
+      'xml" href=', full_path("atom/$thread"), '<script type="text/javascript"',
+      ' src="', full_path('trip.js'), '"></script></head><body class="thread" ',
+      "onload=\"init()\"><div class=\"thread_head\"><a href=\"read/$thread\">",
+      "$title</a></div>";
 $selection = '' unless $selection =~ /^(?:\d*(?:-\d*)?|l\d+)(?:,(?:\d*(?:-\d*)?|l\d+))*$/;
 my @ranges = split /,/, $selection;
 if(@ranges)

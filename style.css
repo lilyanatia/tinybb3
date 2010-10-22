@@ -11,6 +11,7 @@ div.thread_list, div.thread, div#threadform, table
 .thread_head a { color: red; }
 .thread_head { font-size: large; }
 .post_head { font-size: small; }
+.trip { color: green; }
 .comment { padding-left: 2em; }
 .post { margin: 1em; }
 th, td { border: 1px solid black; }
