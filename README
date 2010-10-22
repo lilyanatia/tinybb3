@@ -1,5 +1,7 @@
 this is a (relatively) small anonymous bbs script. it probably only works right out of the box with apache, but it should be easy to figure out how to make it work with any other httpd that has something like mod_rewrite.
 
-make sure you edit the RewriteBase line in the main .htaccess file if you're installing it somewhere other than /tinybb3.
+make sure you edit the "RewriteBase" and "Setenv base" lines in the main .htaccess file if you're installing it somewhere other than /tinybb3.
+
+support for tripcodes has been added. posting with a tripcode and viewing tripcodes currently requires javascript. to view the tripcode (if one was used) for a post, click on the post header.
 
 if you want a gopher interface to your board, point your gopherd at the main board directory.
