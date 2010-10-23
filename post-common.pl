@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use strict;
-use Encode qw(decode);
+use Encode qw(encode decode);
 use open ':utf8';
 use Fcntl qw(:flock);
 use POSIX qw(strftime);
@@ -246,7 +246,7 @@ sub build_index($)
                    'iv>';
   for (0..$last_thread)
   { print $indexfile "<div class=\"thread\" id=\"$threads[$_]\"><div class=\"t",
-                     'hread_head"><a href="', full_path("read/$thread"), '">',
+                     'hread_head"><a href="', full_path("read/$threads[$_]"), '">',
                      "$titles[$_] ($lengths[$_])</a></div>";
     post_html($threads[$_], 1, $indexfile);
     range_html($threads[$_], $lengths[$_] > 10 ? $lengths[$_] - 8 : 2 ,
