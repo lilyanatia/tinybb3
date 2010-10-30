@@ -16,17 +16,20 @@ function init()
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
   { if(divs[i].className == 'post')
-    { var head = divs[i].firstChild;
-      var parts = divs[i].id.split('_');
-      head.onclick = function(e)
-      { var span = document.createElement('span');
-        span.className = 'trip';
-        var x = new XMLHttpRequest();
-        x.open('GET', base + '/threads/' + parts[0] + '/posts/.' + parts[1] + '.trip', false);
-        x.send();
-        if(x.status == 200)
+    { (function()
+      { var head = divs[i].firstChild;
+        var parts = divs[i].id.split('_');
+        var thread = parts[0];
+        var post = parts[1];
+        head.onclick = function(e)
         { var span = document.createElement('span');
           span.className = 'trip';
-          span.appendChild(document.createTextNode(' !' + x.responseText));
-          head.appendChild(span);
-          head.onclick = null; }}}}}
+          var x = new XMLHttpRequest();
+          x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
+          x.send();
+          if(x.status == 200)
+          { var span = document.createElement('span');
+            span.className = 'trip';
+            span.appendChild(document.createTextNode(' !' + x.responseText));
+            head.appendChild(span);
+            head.onclick = null; }}})();}}}
