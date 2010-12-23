@@ -11,6 +11,8 @@ RewriteEngine on
 RewriteBase /tinybb3
 RewriteCond "%{QUERY_STRING}" ^jsonp=
 RewriteRule ^json(/\d+)$ ./json.pl$1 [L]
+RewriteCond "%{QUERY_STRING}" ^jsonp=
+RewriteRule ^json/*$ ./json.pl [L]
 RewriteRule ^(read|json)(/\d+)/+(0*1?-0*([1-9]\d{3,})?|l0*([1-9]\d{3,})?)?$ ./$1$2 [L]
 RewriteRule ^(read|json)(/\d+/.*,.*)$ ./$1.pl$2 [L]
 RewriteRule ^(read|json)(/\d+/+(\d*-?\d*|l\d+))$ ./$1.pl$2 [L]
