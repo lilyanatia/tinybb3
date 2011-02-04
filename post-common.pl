@@ -111,10 +111,19 @@ sub build_index($)
                   "=\"stylesheet\" type=\"text/css\" href=\"",
                   full_path('style.css'), '"><link rel="alternate" type="appli',
                   'cation/atom+xml" href=', full_path("atom/$thread"), '<scrip',
-                  't type="text/javascript" src="', full_path('trip.js'), '</s',
-                  'cript></head><body class="thread" onload="init()"><div clas',
-                  "s=\"thread_head\"><a href=\"read/$thread\">$title</a></div>";
+                  't type="text/javascript" src="', full_path('trip.js'), '"><',
+                  '/script></head><body class="thread" onload="init()"><div cl',
+                  "ass=\"thread_head\"><a href=\"read/$thread\">$title</a></di",
+                  'v>';
   range_html($thread, 1, 1000, $htmlfile);
+  my @posts = glob "threads/$thread/posts/*";
+  print $htmlfile '<div class="replyform"><form method="post" action="',
+                   full_path('post.pl'), '"><input type="hidden" name="thread"',
+                   " value=\"$thread\"><input type=\"checkbox\" id=\"sage_",
+                   "$thread\" name=\"sage\" checked=\"checked\"> <label for=\"",
+                   "sage_$thread\">don't bump thread</label> <input type=\"sub",
+                   'mit" value="reply"><br><textarea name="comment"></textarea',
+                   '></form></div>' if scalar @posts < 1000;
   flock $htmlfile, LOCK_UN;
   close $htmlfile;
 
@@ -135,7 +144,8 @@ sub build_index($)
                   strftime('%FT%TZ', gmtime $updated), '</updated><id>',
                   full_path("read/$thread"), '</id>';
   my $read = full_path('read/');
-  for my $post (1..length glob "threads/$thread/posts/*")
+  my @posts = glob "threads/$thread/posts/*";
+  for my $post (1..scalar @posts)
   { open my $postfile, '<', "threads/$thread/posts/$post";
     flock $postfile, LOCK_SH;
     my $comment = join '', <$postfile>;
@@ -185,9 +195,10 @@ sub build_index($)
                      'table><tr><th>title</th><th>posts</th><th>last post</th>',
                      '</tr>';
   print $gophermapfile "anonymous bbs\n\n";
-  for $thread (glob 'threads/*')
+  for $thread (sort { (stat "$b/title")[9] <=> (stat "$a/title")[9] } (glob 'threads/*'))
   { $thread =~ s/^.*\/([^\/]+)$/$1/;
-    my $posts = length glob "threads/$thread/posts/*";
+    my @posts = glob "threads/$thread/posts/*";
+    my $posts = scalar @posts;
     open my $titlefile, '<', "threads/$thread/title";
     flock $titlefile, LOCK_SH;
     $title = <$titlefile>;
