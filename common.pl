@@ -3,6 +3,7 @@
 use strict;
 
 our $gopher = 0;
+our $cmdline = 0;
 our $script_name;
 
 sub full_path($)
@@ -13,8 +14,9 @@ sub full_path($)
 
 sub error($)
 { my ($message) = @_;
-  die $message unless $gopher;
-  print "3$message\n";
+  die $message unless $gopher || $cmdline;
+  print "3$message\n" if $gopher;
+  print "error: $message\n" if $cmdline;
   exit; }
 
 1;

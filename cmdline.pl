@@ -8,6 +8,12 @@ use POSIX qw(strftime);
 BEGIN { require 'post-common.pl'; }
 
 our $cmdline;
+open my $htaccess, '<', '.htaccess';
+flock $htaccess, LOCK_SH;
+while(<$htaccess>)
+{ our $script_name = "$1post.pl" if $_ =~ /^RewriteBase\s+(.*)$/; }
+flock $htaccess, LOCK_UN;
+close $htaccess;
 
 use constant MAIN_MENU => { 'r' => { desc => 'read threads',
                                      func => 'show_threads()' },
@@ -79,7 +85,7 @@ sub show_post($$)
 sub read_comment()
 { my $comment = '';
   print 'enter comment. "." (without the quotation marks) on a line by itself ',
-        'ends input.';
+        "ends input.\n";
   while(<STDIN>)
   { last if /^.$/;
     $comment .= $_; }
