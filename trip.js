@@ -32,4 +32,25 @@ function init()
             span.className = 'trip';
             span.appendChild(document.createTextNode(' !' + x.responseText));
             head.appendChild(span);
-            head.onclick = null; }}})();}}}
+            head.onclick = null; }}})();}}
+
+  if(!document.createTreeWalker) return;
+  var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|' +
+              'telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
+  var url = new RegExp();
+  url.compile('(' + proto + '):[^ "<>{}|\\^~`]*');
+  var tw = document.createTreeWalker(
+             document.body,
+             NodeFilter.SHOW_TEXT,
+             function(n) { return  n.parentNode.className == 'comment' ?
+                                  NodeFilter.FILTER_ACCEPT :
+                                  NodeFilter.FILTER_SKIP; },
+             false);
+  var nodes = [];
+  while(tw.nextNode())
+    nodes.push(tw.currentNode);
+  var n;
+  for(var i = 0; n = nodes[i]; ++i)
+  { var s = document.createElement('span');
+    s.innerHTML = n.data.replace(url, '<a href="$&">$&</a>');
+    n.parentNode.replaceChild(s, n); }}
