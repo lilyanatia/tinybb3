@@ -25,7 +25,7 @@ function init()
         { var span = document.createElement('span');
           span.className = 'trip';
           var x = new XMLHttpRequest();
-          x.open('GET', base + 'threads/' + thread + '/posts/.' + post + '.trip', false);
+          x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
           x.send();
           if(x.status == 200)
           { var span = document.createElement('span');
