@@ -134,7 +134,7 @@ sub build_index($)
   open my $threadgophermapfile, '>', "threads/$thread/gophermap";
   flock $threadgophermapfile, LOCK_EX;
   print $threadgophermapfile "$gophertitle\n";
-  open my $atomfile, "atom/$thread";
+  open my $atomfile, '>', "atom/$thread";
   flock $atomfile, LOCK_EX;
   print $atomfile "<?xml version=\"1.0\" encoding=\"utf-8\">\n<feed xmlns=\"ht",
                   "tp://www.w3.org/2005/Atom\"><title>$title</title><author><n",
