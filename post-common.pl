@@ -110,11 +110,11 @@ sub build_index($)
   print $htmlfile "<!DOCTYPE html>\n<html><head><title>$title</title><link rel",
                   "=\"stylesheet\" type=\"text/css\" href=\"",
                   full_path('style.css'), '"><link rel="alternate" type="appli',
-                  'cation/atom+xml" href=', full_path("atom/$thread"), '<scrip',
-                  't type="text/javascript" src="', full_path('trip.js'), '"><',
-                  '/script></head><body class="thread" onload="init()"><div cl',
-                  "ass=\"thread_head\"><a href=\"read/$thread\">$title</a></di",
-                  'v>';
+                  'cation/atom+xml" href=', full_path("atom/$thread"), '"><scr',
+                  'ipt type="text/javascript" src="', full_path('trip.js'), '"',
+                  '></script></head><body class="thread" onload="init()"><div ',
+                  "class=\"thread_head\"><a href=\"read/$thread\">$title</a></",
+                  'div>';
   range_html($thread, 1, 1000, $htmlfile);
   my @posts = glob "threads/$thread/posts/*";
   print $htmlfile '<div class="replyform"><form method="post" action="',
