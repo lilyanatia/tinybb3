@@ -11,6 +11,5 @@ BEGIN { require 'post-common.pl'; }
 
 my $query = new CGI;
 our $script_name = $query->script_name();
-print "Content-Type: text/plain\n\nrebuilding caches...";
 build_index(substr $_, 8) for glob 'threads/*';
-print "done.\n";
+print $query->redirect(-uri => full_path(HTML_INDEX), -status => 303);
