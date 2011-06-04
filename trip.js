@@ -21,6 +21,13 @@ function init()
         var parts = divs[i].id.split('_');
         var thread = parts[0];
         var post = parts[1];
+        var comment = divs[i].lastChild;
+        comment.onclick = function(e)
+        { var form = document.getElementById('sage_'+thread).parentNode;
+          var textarea = form.getElementsByTagName('textarea')[0];
+          if(textarea.value != '' && textarea.value.substr(-1) != '\n')
+            textarea.value += '\n';
+          textarea.value += '>>' + post + '\n'; };
         head.onclick = function(e)
         { var span = document.createElement('span');
           span.className = 'trip';
