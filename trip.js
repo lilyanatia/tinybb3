@@ -25,6 +25,7 @@ function init()
         comment.onclick = function(e)
         { var form = document.getElementById('sage_'+thread).parentNode;
           var textarea = form.getElementsByTagName('textarea')[0];
+          textarea.focus();
           if(textarea.value != '' && textarea.value.substr(-1) != '\n')
             textarea.value += '\n';
           textarea.value += '>>' + post + '\n'; };
