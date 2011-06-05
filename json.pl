@@ -12,7 +12,7 @@ BEGIN { require 'json-common.pl'; }
 my $query = new CGI;
 my $jsonp = $query->param('jsonp');
 
-print "Content-type: application/json; charset=utf-8\n\n";
+print "Content-type: application/json; charset=utf-8\nAccess-Control: allow <*>\nAccess-Control-Allow-Origin: *\n\n";
 
 if($ENV{PATH_INFO} and $ENV{PATH_INFO} !~ /^\/+$/)
 { die 'invalid request!' unless $ENV{PATH_INFO} =~ /^\/(\d+)(?:\/(.*))?$/;

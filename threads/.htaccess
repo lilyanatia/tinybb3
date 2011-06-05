@@ -1,1 +1,3 @@
 ForceType text/plain
+Header set Access-Control "allow <*>"
+Header set Access-Control-Allow-Origin <*>

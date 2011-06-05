@@ -1,2 +1,4 @@
 Options -Indexes
 ForceType application/atom+xml
+Header set Access-Control "allow <*>"
+Header set Access-Control-Allow-Origin <*>

@@ -18,10 +18,12 @@ RewriteRule ^(read|json)(/\d+/.*,.*)$ ./$1.pl$2 [L]
 RewriteRule ^(read|json)(/\d+/+(\d*-?\d*|l\d+))$ ./$1.pl$2 [L]
 RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
 
-<Files ????.txt>
- Deny from all
+<Files subject.txt>
+ Header set Access-Control "allow <*>"
+ Header set Access-Control-Allow-Origin <*>
 </Files>
-<Files build_index.sh>
+
+<Files ????.txt>
  Deny from all
 </Files>
 <Files trip.js>
