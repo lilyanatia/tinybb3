@@ -234,7 +234,8 @@ sub build_index($)
   # build index.html
   my @all = sort { (stat $b)[9] <=> (stat $a)[9] } glob 'threads/*/title';
   my $last_thread = (scalar @all) > 9 ? 9 : (scalar @all) - 1;
-  my @threads = map { substr $_, 8, -6 } @all[0..$last_thread];
+  my $last_listed_thread = (scalar @all) > 39 ? 39 : (scalar @all) - 1;
+  my @threads = map { substr $_, 8, -6 } @all[0..$last_listed_thread];
   my @titles = map { open $titlefile, '<', "threads/$_/title";
                      flock $titlefile, LOCK_SH;
                      $title = <$titlefile>;
@@ -249,9 +250,10 @@ sub build_index($)
                   full_path('style.css'), '"><script type="text/javascript" sr',
                   'c="', full_path('trip.js'), '"></script></head><body class=',
                   '"mainpage" onload="init()"><div class="thread_list"><ol>';
-  for (0..$last_thread)
-  { print $indexfile "<li><a href=\"#$threads[$_]\">$titles[$_] ($lengths[$_])",
-                     '</a></li>'; }
+  for (0..$last_listed_thread)
+  { my $href = $_ > 9 ? "read/$threads[$_]" : "#$threads[$_]";
+    print $indexfile "<li><a href=\"$href\">$titles[$_] ($lengths[$_])</a></li",
+                     '>'; }
   print $indexfile '</ol><div class="threadlinks"><a href="#threadform">new th',
                    'read</a> | <a href="subback.html">all threads</a></div></d',
                    'iv>';
