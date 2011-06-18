@@ -31,11 +31,13 @@ function init()
           textarea.value += '>>' + post + '\n'; };
         if(head.getElementsByTagName('span').length)
         { var span = head.getElementsByTagName('span')[0];
-          var x = new XMLHttpRequest();
-          x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
-          x.send();
+          try
+          { var x = new XMLHttpRequest();
+            x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
+            x.send();
           if(x.status == 200)
-          { span.appendChild(document.createTextNode(' !' + x.responseText)); }}})();}}
+          { span.appendChild(document.createTextNode(' !' + x.responseText)); }}
+          catch(e) { }}})();}}
 
   if(document.createTreeWalker)
   { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
