@@ -22,25 +22,20 @@ function init()
         var thread = parts[0];
         var post = parts[1];
         var comment = divs[i].lastChild;
-        comment.onclick = function(e)
+        head.onclick = function(e)
         { var form = document.getElementById('sage_'+thread).parentNode;
           var textarea = form.getElementsByTagName('textarea')[0];
           textarea.focus();
           if(textarea.value != '' && textarea.value.substr(-1) != '\n')
             textarea.value += '\n';
           textarea.value += '>>' + post + '\n'; };
-        head.onclick = function(e)
-        { var span = document.createElement('span');
-          span.className = 'trip';
+        if(head.getElementsByTagName('span').length)
+        { var span = head.getElementsByTagName('span')[0];
           var x = new XMLHttpRequest();
           x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
           x.send();
           if(x.status == 200)
-          { var span = document.createElement('span');
-            span.className = 'trip';
-            span.appendChild(document.createTextNode(' !' + x.responseText));
-            head.appendChild(span);
-            head.onclick = null; }}})();}}
+          { span.appendChild(document.createTextNode(' !' + x.responseText)); }}})();}}
 
   if(document.createTreeWalker)
   { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';

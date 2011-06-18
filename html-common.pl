@@ -19,14 +19,15 @@ sub post_html($$$)
     flock $postfile, LOCK_UN;
     close $postfile;
     my $read = full_path('read');
+    my $trip = '<span class="trip"></span>' x -e "threads/$thread/posts/.$post.trip";
     $comment =~ s/&/&amp;/g;
     $comment =~ s/</&lt;/g;
     $comment =~ s/>/&gt;/g;
     $comment =~ s/&gt;&gt;((?:\d*(?:-\d*)?|l\d+)(?:,(?:\d*(?:-\d*)?|l\d+))*)/<a href="$read\/$thread\/$1">&gt;&gt;$1<\/a>/g;
     $comment =~ s/\n/<br>/g;
     print $fh "<div class=\"post\" id=\"${thread}_${post}\"><div class=\"post_",
-          "head\">$post ", scalar gmtime $time, '</div><div class="comment">',
-          "$comment</div></div>"; }}
+          "head\">$post ", scalar gmtime $time, $trip, '</div><div class="comm',
+          "ent\">$comment</div></div>"; }}
 
 sub range_html($$$$)
 { my ($thread, $start, $end, $fh) = @_;
