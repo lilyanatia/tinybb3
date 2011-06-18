@@ -17,7 +17,14 @@ sub post_json($$$)
     $comment =~ s/\\/\\\\/g;
     $comment =~ s/"/\\"/g;
     chomp $comment;
-    $$json_data{$post} = {"name" => "Anonymous", "now" => $time, "com" => $comment}; }}
+    my $name = "Anonymous";
+    if(-e "threads/$thread/posts/.$post.trip")
+    { open my $tripfile, '<', "threads/$thread/posts/.$post.trip";
+      flock $tripfile, LOCK_SH;
+      $name .= '!' . <$tripfile>;
+      flock $tripfile, LOCK_UN;
+      close $tripfile; }
+    $$json_data{$post} = {"name" => $name, "now" => $time, "com" => $comment}; }}
 
 sub range_json($$$$)
 { my ($json_data, $thread, $start, $end) = @_;
