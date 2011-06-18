@@ -2,6 +2,6 @@ this is a (relatively) small anonymous bbs script. it probably only works right 
 
 make sure you edit the "RewriteBase" and "Setenv base" lines in the main .htaccess file if you're installing it somewhere other than /tinybb3.
 
-posting with a tripcode and viewing tripcodes in the html interface requires javascript. tripcodes can be viewed as plain text through gopher or http as threads/${thread}/posts/.${post}.trip.
+posting with a tripcode and viewing tripcodes in the html interface requires javascript. tripcodes are included in the "name" in json. tripcodes can also be viewed as plain text through gopher or http as threads/${thread}/posts/.${post}.trip.
 
 if you want a gopher interface to your board, point your gopherd at the main board directory.
