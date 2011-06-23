@@ -1,5 +1,12 @@
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
+  var sexp = document.createElement('script');
+  var bbc = document.createElement('script');
+  bbc.type = sexp.type = 'text/javascript';
+  sexp.src = base + '/sexp.js';
+  bbc.src = base + '/bbcode.js';
+  document.getElementsByTagName('head')[0].appendChild(sexp);
+  document.getElementsByTagName('head')[0].appendChild(bbc);
   var forms = document.getElementsByTagName('form');
   for(var i = 0; i < forms.length; ++i)
   { var label = document.createElement('label');
@@ -22,6 +29,24 @@ function init()
         var thread = parts[0];
         var post = parts[1];
         var comment = divs[i].lastChild;
+        var html_link = document.createElement('a');
+        var sexp_link = document.createElement('a');
+        var bbc_link = document.createElement('a');
+        html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.innerText;post.removeChild(post.firstChild);return true})()';
+        sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.innerText);post.removeChild(post.firstChild);return true})()';
+        bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.innerText)));post.removeChild(post.firstChild);return true})()';
+        html_link.appendChild(document.createTextNode('html'));
+        sexp_link.appendChild(document.createTextNode('sexpcode'));
+        bbc_link.appendChild(document.createTextNode('bbcode'));
+        format_div = document.createElement('div');
+        format_div.style.fontSize = 'xx-small';
+        format_div.appendChild(document.createTextNode('formatting: '));
+        format_div.appendChild(html_link);
+        format_div.appendChild(document.createTextNode(' '));
+        format_div.appendChild(sexp_link);
+        format_div.appendChild(document.createTextNode(' '));
+        format_div.appendChild(bbc_link);
+        divs[i].insertBefore(format_div, divs[i].firstChild);
         head.onclick = function(e)
         { var form = document.getElementById('sage_'+thread).parentNode;
           var textarea = form.getElementsByTagName('textarea')[0];
@@ -56,5 +81,8 @@ function init()
     var n;
     for(var i = 0; n = nodes[i]; ++i)
     { var s = document.createElement('span');
-      s.innerHTML = n.data.replace(url, '<a href="$&">$&</a>');
+      var t = n.nodeValue;
+      t = t.replace(/</g, '&lt;');
+      t = t.replace(/>/g, '&gt;');
+      s.innerHTML = t.replace(url, '<a href="$&">$&</a>');
       n.parentNode.replaceChild(s, n); }}}
