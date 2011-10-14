@@ -38,9 +38,7 @@ else
   flock $titlefile, LOCK_UN;
   close $titlefile;
   chomp $title;
-  error('spam filter triggered') if filter_check('spam.txt', $comment);
   $sage = 0 if $2 == 'bump';
-  $sage = 1 if filter_check('sage.txt', $comment);
   add_post($thread, $sage, $comment); }
 $ENV{SCRIPT_NAME} = $script_name;
 my @posts = glob "threads/$thread/posts/*";

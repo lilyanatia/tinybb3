@@ -17,8 +17,6 @@ if($query->request_method() == 'POST')
   my $sage = $query->param('sage');
   my $comment = $query->param('comment');
   my $pass = $query->param('pass');
-  die 'spam filter triggered' if filter_check('spam.txt', $comment);
-  $sage = 1 if filter_check('sage.txt', $comment);
   $thread = make_thread($title) unless $thread;
   add_post($thread, $sage, $comment, $pass); }
 print $query->redirect(-uri => full_path(HTML_INDEX), -status => 303);

@@ -22,7 +22,8 @@ sub filter_check($$)
   flock $filterfile, LOCK_SH;
   while(<$filterfile>)
   { chomp;
-    last if $_ and ($match = $comment =~ /$_/); }
+    last if ($match = $_) and ($comment =~ /$_/);
+    $match = ''; }
   flock $filterfile, LOCK_UN;
   close $filterfile;
   return $match; }
@@ -52,6 +53,12 @@ sub make_thread($)
   $title =~ s/\r\n/\n/g;
   $title =~ s/[\r\n]/ /g;
   error('no title entered!') unless $title;
+  error('title too long!') if length $title > 127;
+  error('spam filter triggered!') if filter_check('spam.txt', $title);
+  my $len = 1 + length $comment;
+  my @ss = split "\0", `find threads/*/posts -size ${len}c -print0`;
+  my @dups = grep {!`echo $comment|diff - $_`} @ss;
+  error('duplicate post!') if @dups;
   mkdir "threads/$thread";
   mkdir "threads/$thread/posts";
   open my $titlefile, '>', "threads/$thread/title";
@@ -66,8 +73,11 @@ sub add_post($$$$)
 { my ($thread, $sage, $comment, $pass) = @_;
   error('no comment entered!') unless $comment;
   error('thread does not exist!') unless -d "threads/$thread";
+  error('post too long!') if length $comment > 2048;
   $comment = clean_string($comment);
   $comment =~ s/\r\n/\n/g;
+  error('spam filter triggered!') if filter_check('spam.txt', $comment);
+  $sage = 1 if filter_check('sage.txt', $comment);
   my @posts = glob("threads/$thread/posts/*");
   my $num = 1 + scalar @posts;
   error('this thread has been closed.') if $num > 1000;
