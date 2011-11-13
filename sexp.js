@@ -1,8 +1,3 @@
-function createCode(lang)
-{
-    return {open: '<pre>', close: '</pre>'};
-}
-
 /* TODO:
  * - These should be functions that modify the state. For things like
  *   footnotes, they need to be able to append HTML to the end of the
@@ -26,10 +21,6 @@ var tags = {
     'spoiler': {open: '<span class="spoiler">', close: '</span>', },
     'aa':      {open: '<span class="aa">',      close: '</span>', },
     'blink':   {open: '<blink>',                close: '</blink>',},
-
-    //'url':     {open: '<a href="about:blank" rel="nofollow">', close: '</a>', arity: 1}
-    //'img':     {open: '<img href="about:blank" rel="nofollow"/>', close: '', arity: 1, verbatim: true}
-    'code':    {generator: createCode, arity: 1, block: true},
 
     'verbatim': {open: '', close: '', verbatim: true}
 };
