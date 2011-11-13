@@ -2,9 +2,11 @@ function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
   var sexp = document.createElement('script');
   var bbc = document.createElement('script');
-  bbc.type = sexp.type = 'text/javascript';
+  var gplus = document.createElement('script');
+  bbc.type = sexp.type = gplus.type = 'text/javascript';
   sexp.src = base + '/sexp.js';
   bbc.src = base + '/bbcode.js';
+  gplus.src = 'https://apis.google.com/js/plusone.js';
   document.getElementsByTagName('head')[0].appendChild(sexp);
   document.getElementsByTagName('head')[0].appendChild(bbc);
   var forms = document.getElementsByTagName('form');
@@ -32,6 +34,13 @@ function init()
         var html_link = document.createElement('a');
         var sexp_link = document.createElement('a');
         var bbc_link = document.createElement('a');
+        var plus = document.createElement('div');
+        plus.className = 'g-plusone';
+        plus.style.display = 'inline';
+        plus.setAttribute('data-size', 'small');
+        plus.setAttribute('data-href', base + '/' + thread + '/' + post);
+        head.appendChild(document.createTextNode(' '));
+        head.appendChild(plus);
         html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.innerText;post.removeChild(post.firstChild);return true})()';
         sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.innerText);post.removeChild(post.firstChild);return true})()';
         bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.innerText)));post.removeChild(post.firstChild);return true})()';
@@ -64,6 +73,7 @@ function init()
           { span.appendChild(document.createTextNode(' !' + x.responseText)); }}
           catch(e) { }}})();}}
 
+  document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
   { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
     var url = new RegExp();
