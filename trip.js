@@ -67,10 +67,12 @@ function init()
         { var span = head.getElementsByTagName('span')[0];
           try
           { var x = new XMLHttpRequest();
-            x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', false);
-            x.send();
-          if(x.status == 200)
-          { span.appendChild(document.createTextNode(' !' + x.responseText)); }}
+            x.span = span;
+            x.onreadystatechange = function()
+            { if(this.readyState == 4 && this.status == 200)
+              { this.span.appendChild(document.createTextNode(' !' + this.responseText)); }};
+            x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', true);
+            x.send(); }
           catch(e) { }}})();}}
 
   document.getElementsByTagName('head')[0].appendChild(gplus);
