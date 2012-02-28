@@ -1,4 +1,6 @@
-body.mainpage, body.subback { background: #ba9 url('ba.png') fixed; }
+body.mainpage, body.subback
+{ background: #ba9 url('ba.png') fixed;
+  background-image: none, url('ba.svgz'), url('ba.png'); }
 div.thread_list, div.thread, div#threadform, table
 { border: 4px double black;
   padding: 0.5em;
@@ -18,3 +20,10 @@ th, td { border: 1px solid black; }
 textarea
 { height: 10em;
   width: 40em; } 
+
+// stuff for sexpcode:
+.spoiler{background: #000;color: #000;}
+.spoiler:hover {color:#FFF;}
+.aa {text-align: left;font-family: IPAMonaPGothic,Mona,'MS PGothic',YOzFontAA97 !important;}
+.o{text-decoration:overline;}
+.s{text-decoration:line-through;}
