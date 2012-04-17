@@ -3,12 +3,18 @@ function init()
   var sexp = document.createElement('script');
   var bbc = document.createElement('script');
   var gplus = document.createElement('script');
-  bbc.type = sexp.type = gplus.type = 'text/javascript';
+  var fb = document.createElement('script');
+  var fbdiv = document.createElement('div');
+  fbdiv.id = 'fb-root';
+  document.body.insertBefore(fbdiv, document.body.firstChild);
+  bbc.type = sexp.type = gplus.type = fb.type = 'text/javascript';
   sexp.src = base + '/sexp.js';
   bbc.src = base + '/bbcode.js';
   gplus.src = 'https://apis.google.com/js/plusone.js';
+  fb.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
   document.getElementsByTagName('head')[0].appendChild(sexp);
   document.getElementsByTagName('head')[0].appendChild(bbc);
+  document.getElementsByTagName('head')[0].appendChild(fb);
   var forms = document.getElementsByTagName('form');
   for(var i = 0; i < forms.length; ++i)
   { var label = document.createElement('label');
@@ -41,6 +47,15 @@ function init()
         plus.setAttribute('data-href', base + '/' + thread + '/' + post);
         head.appendChild(document.createTextNode(' '));
         head.appendChild(plus);
+        var like = document.createElement('div');
+        like.className = 'fb-like';
+        like.setAttribute('data-href', base + '/' + thread + '/' + post);
+        like.setAttribute('data-send', 'false');
+        like.setAttribute('data-layout', 'button_count');
+        like.setAttribute('data-width', '450');
+        like.setAttribute('data-show-faces', 'false');
+        head.appendChild(document.createTextNode(' '));
+        head.appendChild(like);
         html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.innerText;post.removeChild(post.firstChild);return true})()';
         sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.innerText);post.removeChild(post.firstChild);return true})()';
         bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.innerText)));post.removeChild(post.firstChild);return true})()';
