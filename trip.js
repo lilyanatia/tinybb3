@@ -73,17 +73,18 @@ function init()
                 { this.span.appendChild(document.createTextNode(' !' + this.responseText)); }};
               x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', true);
               x.send(); }
-            catch(e) { }}} else post = '';
+            catch(e) { }}};
+        var url = base + '/' + thread + (post ? '/' + post : '');
         var plus = document.createElement('div');
         plus.className = 'g-plusone';
         plus.style.display = 'inline';
         plus.setAttribute('data-size', 'small');
-        plus.setAttribute('data-href', base + '/' + thread + '/' + post);
+        plus.setAttribute('data-href', url);
         head.appendChild(document.createTextNode(' '));
         head.appendChild(plus);
         var like = document.createElement('div');
         like.className = 'fb-like';
-        like.setAttribute('data-href', base + '/' + thread + '/' + post);
+        like.setAttribute('data-href', url);
         like.setAttribute('data-send', 'false');
         like.setAttribute('data-layout', 'button_count');
         like.setAttribute('data-width', '450');
