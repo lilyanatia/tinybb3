@@ -30,16 +30,50 @@ function init()
     forms[i].insertBefore(label, forms[i].firstChild); }
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
-  { if(divs[i].className == 'post')
+  { if(divs[i].className == 'post' || divs[i].className == 'thread')
     { (function()
       { var head = divs[i].firstChild;
         var parts = divs[i].id.split('_');
         var thread = parts[0];
         var post = parts[1];
-        var comment = divs[i].lastChild;
-        var html_link = document.createElement('a');
-        var sexp_link = document.createElement('a');
-        var bbc_link = document.createElement('a');
+        if(post)
+        { var comment = divs[i].lastChild;
+          var html_link = document.createElement('a');
+          var sexp_link = document.createElement('a');
+          var bbc_link = document.createElement('a');
+          html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.innerText;post.removeChild(post.firstChild);return true})()';
+          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.innerText);post.removeChild(post.firstChild);return true})()';
+          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.innerText)));post.removeChild(post.firstChild);return true})()';
+          html_link.appendChild(document.createTextNode('html'));
+          sexp_link.appendChild(document.createTextNode('sexpcode'));
+          bbc_link.appendChild(document.createTextNode('bbcode'));
+          format_div = document.createElement('div');
+          format_div.style.fontSize = 'xx-small';
+          format_div.appendChild(document.createTextNode('formatting: '));
+          format_div.appendChild(html_link);
+          format_div.appendChild(document.createTextNode(' '));
+          format_div.appendChild(sexp_link);
+          format_div.appendChild(document.createTextNode(' '));
+          format_div.appendChild(bbc_link);
+          divs[i].insertBefore(format_div, divs[i].firstChild);
+          head.onclick = function(e)
+          { var form = document.getElementById('sage_'+thread).parentNode;
+            var textarea = form.getElementsByTagName('textarea')[0];
+            textarea.focus();
+            if(textarea.value != '' && textarea.value.substr(-1) != '\n')
+              textarea.value += '\n';
+            textarea.value += '>>' + post + '\n'; };
+          if(head.getElementsByTagName('span').length)
+          { var span = head.getElementsByTagName('span')[0];
+            try
+            { var x = new XMLHttpRequest();
+              x.span = span;
+              x.onreadystatechange = function()
+              { if(this.readyState == 4 && this.status == 200)
+                { this.span.appendChild(document.createTextNode(' !' + this.responseText)); }};
+              x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', true);
+              x.send(); }
+            catch(e) { }}} else post = '';
         var plus = document.createElement('div');
         plus.className = 'g-plusone';
         plus.style.display = 'inline';
@@ -55,40 +89,7 @@ function init()
         like.setAttribute('data-width', '450');
         like.setAttribute('data-show-faces', 'false');
         head.appendChild(document.createTextNode(' '));
-        head.appendChild(like);
-        html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.innerText;post.removeChild(post.firstChild);return true})()';
-        sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.innerText);post.removeChild(post.firstChild);return true})()';
-        bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.innerText)));post.removeChild(post.firstChild);return true})()';
-        html_link.appendChild(document.createTextNode('html'));
-        sexp_link.appendChild(document.createTextNode('sexpcode'));
-        bbc_link.appendChild(document.createTextNode('bbcode'));
-        format_div = document.createElement('div');
-        format_div.style.fontSize = 'xx-small';
-        format_div.appendChild(document.createTextNode('formatting: '));
-        format_div.appendChild(html_link);
-        format_div.appendChild(document.createTextNode(' '));
-        format_div.appendChild(sexp_link);
-        format_div.appendChild(document.createTextNode(' '));
-        format_div.appendChild(bbc_link);
-        divs[i].insertBefore(format_div, divs[i].firstChild);
-        head.onclick = function(e)
-        { var form = document.getElementById('sage_'+thread).parentNode;
-          var textarea = form.getElementsByTagName('textarea')[0];
-          textarea.focus();
-          if(textarea.value != '' && textarea.value.substr(-1) != '\n')
-            textarea.value += '\n';
-          textarea.value += '>>' + post + '\n'; };
-        if(head.getElementsByTagName('span').length)
-        { var span = head.getElementsByTagName('span')[0];
-          try
-          { var x = new XMLHttpRequest();
-            x.span = span;
-            x.onreadystatechange = function()
-            { if(this.readyState == 4 && this.status == 200)
-              { this.span.appendChild(document.createTextNode(' !' + this.responseText)); }};
-            x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', true);
-            x.send(); }
-          catch(e) { }}})();}}
+        head.appendChild(like); })();}}
 
   document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
