@@ -26,8 +26,8 @@ print "Content-type: text/html; charset=utf-8\n\n<!DOCTYPE html>\n<html><head>",
       full_path('style.css'), '"><link rel="alternate" type="application/atom+',
       'xml" href=', full_path("atom/$thread"), '"><script type="text/javascript"',
       ' src="', full_path('trip.js'), '"></script></head><body class="thread" ',
-      "onload=\"init()\"><div class=\"thread_head\"><a href=\"read/$thread\">",
-      "$title</a></div>";
+      'onload="init()"><div class="thread_head"><a href="',
+      full_path("read/$thread"), "\">$title</a></div>";
 $selection = '' unless $selection =~ /^(?:\d*(?:-\d*)?|l\d+)(?:,(?:\d*(?:-\d*)?|l\d+))*$/;
 my @ranges = split /,/, $selection;
 if(@ranges)
