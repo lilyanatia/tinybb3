@@ -20,6 +20,7 @@ th, td { border: 1px solid black; }
 textarea
 { height: 10em;
   width: 40em; } 
+.quote { color: #060; }
 
 // stuff for sexpcode:
 .spoiler{background: #000;color: #000;}

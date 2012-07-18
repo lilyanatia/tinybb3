@@ -110,6 +110,7 @@ function init()
     for(var i = 0; n = nodes[i]; ++i)
     { var s = document.createElement('span');
       var t = n.nodeValue;
+      if(t.match(/^>[^>]/)) s.className='quote';
       t = t.replace(/</g, '&lt;');
       t = t.replace(/>/g, '&gt;');
       s.innerHTML = t.replace(url, '<a href="$&">$&</a>');
