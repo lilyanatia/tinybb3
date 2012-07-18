@@ -95,8 +95,7 @@ function init()
   document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
   { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
-    var url = new RegExp();
-    url.compile('(' + proto + '):[^ "<>{}|\\^~`]*');
+    var url = new RegExp('(' + proto + '):[^ "<>{}|\\^~`]*', 'g');
     var tw = document.createTreeWalker(
                document.body,
                NodeFilter.SHOW_TEXT,
