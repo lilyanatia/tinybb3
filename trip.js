@@ -12,6 +12,10 @@ function init()
   bbc.src = base + '/bbcode.js';
   gplus.src = 'https://apis.google.com/js/plusone.js';
   fb.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
+  var x = new XMLHttpRequest();
+  x.open('GET', base + '/trips.json', false);
+  x.send();
+  var trips = JSON.parse(x.responseText);
   document.getElementsByTagName('head')[0].appendChild(sexp);
   document.getElementsByTagName('head')[0].appendChild(bbc);
   document.getElementsByTagName('head')[0].appendChild(fb);
@@ -65,15 +69,8 @@ function init()
             textarea.value += '>>' + post + '\n'; };
           if(head.getElementsByTagName('span').length)
           { var span = head.getElementsByTagName('span')[0];
-            try
-            { var x = new XMLHttpRequest();
-              x.span = span;
-              x.onreadystatechange = function()
-              { if(this.readyState == 4 && this.status == 200)
-                { this.span.appendChild(document.createTextNode(' !' + this.responseText)); }};
-              x.open('GET', base + '/threads/' + thread + '/posts/.' + post + '.trip', true);
-              x.send(); }
-            catch(e) { }}};
+          var trip = trips[thread + '/' + post];
+          if(trip) span.appendChild(document.createTextNode(' !' + trip)); }}
         var url = base + '/' + thread + (post ? '/' + post : '');
         var plus = document.createElement('div');
         plus.className = 'g-plusone';
