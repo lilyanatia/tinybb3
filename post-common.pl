@@ -128,12 +128,14 @@ sub build_index($)
   range_html($thread, 1, 1000, $htmlfile);
   my @posts = glob "threads/$thread/posts/*";
   print $htmlfile '<div class="replyform"><form method="post" action="',
-                   full_path('post.pl'), '"><input type="hidden" name="thread"',
-                   " value=\"$thread\"><input type=\"checkbox\" id=\"sage_",
-                   "$thread\" name=\"sage\" checked=\"checked\"> <label for=\"",
-                   "sage_$thread\">don't bump thread</label> <input type=\"sub",
-                   'mit" value="reply"><br><textarea name="comment"></textarea',
-                   '></form></div>' if scalar @posts < 1000;
+                   full_path('post.pl'), "\"><label for=\"pass_$thread\">",
+                   'tripcode (optional): </label><input type="text" id="',
+                   "pass_$thread\" name=\"pass\"><br><input type=\"hidden\""
+                   " name=\"thread\" value=\"$thread\"><input type=\"checkbox",
+                   "\" id=\"sage_$thread\" name=\"sage\" checked=\"checked\"> ",
+                   "<label for=\"sage_$thread\">don't bump thread</label> ",
+                   '<input type="submit" value="reply"><br><textarea name=',
+                   '"comment"></textarea></form></div>' if scalar @posts < 1000;
   flock $htmlfile, LOCK_UN;
   close $htmlfile;
 
@@ -275,19 +277,24 @@ sub build_index($)
     range_html($threads[$_], $lengths[$_] > 10 ? $lengths[$_] - 8 : 2 ,
                $lengths[$_], $indexfile) if $lengths[$_] > 1;
     print $indexfile '<div class="replyform"><form method="post" action="',
-                     full_path('post.pl'), '"><input type="hidden" name="threa',
-                     "d\" value=\"$threads[$_]\"><input type=\"checkbox\" id=",
-                     "\"sage_$threads[$_]\" name=\"sage\" checked=\"checked\">",
-                     " <label for=\"sage_$threads[$_]\">don't bump thread</lab",
-                     'el> <input type="submit" value="reply"><br><textarea nam',
-                     'e="comment"></textarea></form></div>' if $lengths[$_] <
+                     full_path('post.pl'), "\"><label for=\"pass_$thread\">",
+                     'tripcode (optional): </label><input type="text" id="',
+                     "pass_$thread\" name=\"pass\"><br><input type=\"hidden\"",
+                     " name=\"thread\" value=\"$threads[$_]\"><input type=",
+                     "\"checkbox\" id=\"sage_$threads[$_]\" name=\"sage\" ",
+                     "checked=\"checked\"> <label for=\"sage_$threads[$_]\">",
+                     "don't bump thread</label> <input type=\"submit\" value=",
+                     '"reply"><br><textarea name="comment"></textarea></form>',
+                     '</div>' if $lengths[$_] <
                      1000;
     print $indexfile '</div>'; }
   print $indexfile '<div id="threadform"><form method="post" action="',
-                   full_path('post.pl'), '">title: <input type="text" name="ti',
-                   'tle"> <input type="submit" value="create new thread"><br><',
-                   'textarea name="comment"></textarea></form></div></body></h',
-                   "tml>\n";
+                   full_path('post.pl'), '"><label for="pass">tripcode ',
+                   '(optional): </label><input type="text" id="pass" name=',
+                   '"pass"><br><label for="title">title: </label><input type=',
+                   '"text" id="title" name="title"> <input type="submit" value',
+                   '="create new thread"><br><textarea name="comment">',
+                   "</textarea></form></div></body></html>\n";
   flock $indexfile, LOCK_UN;
   close $indexfile; }
 

@@ -41,9 +41,11 @@ if(@ranges)
       default { range_html($thread, 1, 1000, STDOUT); }}}}
 else { range_html($thread, 1, 1000, STDOUT); }
 print '<div class="replyform"><form method="post" action="',
-      full_path('post.pl'), '"><input type="hidden" name="thread" value="',
-      "$thread\"><input type=\"checkbox\" id=\"sage_$thread\" name=\"sage\" ch",
-      "ecked=\"checked\"> <label for=\"sage_$thread\">don't bump thread</label",
-      '> <input type="submit" value="reply"><br><textarea name="comment"></tex',
-      'tarea></form></div>' if glob("threads/$thread/posts/*") < 1000;
+      full_path('post.pl'), '"><label for="pass_$thread">tripcode (optional): ',
+      '</label><input type="text" id="pass_$thread" name="pass"><br><input ',
+      "type=\"hidden\" name=\"thread\" value=\"$thread\"><input type=",
+      "\"checkbox\" id=\"sage_$thread\" name=\"sage\" checked=\"checked\"> ",
+      "<label for=\"sage_$thread\">don't bump thread</label> <input type=",
+      '"submit" value="reply"><br><textarea name="comment"></textarea></form>',
+      '</div>' if glob("threads/$thread/posts/*") < 1000;
 print "</body></html>\n";

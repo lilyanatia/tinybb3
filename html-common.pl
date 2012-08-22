@@ -19,7 +19,13 @@ sub post_html($$$)
     flock $postfile, LOCK_UN;
     close $postfile;
     my $read = full_path('read');
-    my $trip = '<span class="trip"></span>' x -e "threads/$thread/posts/.$post.trip";
+    my $trip = '';
+    if (-e "thread/$thread/posts/.$post.trip")
+    { open my $tripfile, '<', "threads/$thread/posts/.$post.trip";
+      flock $tripfile, LOCK_SH;
+      $trip = '<span class="trip">' . <$tripfile> . '</span>';
+      flock $tripfile, LOCK_UN;
+      close $tripfile; }
     $comment =~ s/&/&amp;/g;
     $comment =~ s/</&lt;/g;
     $comment =~ s/>/&gt;/g;
