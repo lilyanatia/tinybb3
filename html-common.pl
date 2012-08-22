@@ -23,7 +23,7 @@ sub post_html($$$)
     if (-e "threads/$thread/posts/.$post.trip")
     { open my $tripfile, '<', "threads/$thread/posts/.$post.trip";
       flock $tripfile, LOCK_SH;
-      $trip = '<span class="trip">' . <$tripfile> . '</span>';
+      $trip = '<span class="trip">!' . <$tripfile> . '</span>';
       flock $tripfile, LOCK_UN;
       close $tripfile; }
     $comment =~ s/&/&amp;/g;
