@@ -1,5 +1,6 @@
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
+  var config = <!--#include virtual="config.json"-->;
   var sexp = document.createElement('script');
   var bbc = document.createElement('script');
   var gplus = document.createElement('script');
@@ -14,7 +15,7 @@ function init()
   fb.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
   document.getElementsByTagName('head')[0].appendChild(sexp);
   document.getElementsByTagName('head')[0].appendChild(bbc);
-  document.getElementsByTagName('head')[0].appendChild(fb);
+  if(config.enable_fb) document.getElementsByTagName('head')[0].appendChild(fb);
   var forms = document.getElementsByTagName('form');
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
@@ -69,7 +70,8 @@ function init()
         head.appendChild(document.createTextNode(' '));
         head.appendChild(like); })();}}
 
-  document.getElementsByTagName('head')[0].appendChild(gplus);
+  if(config.enable_gplus)
+    document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
   { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
     var url = new RegExp('(' + proto + '):[^ "<>{}|\\^~`]*', 'g');
