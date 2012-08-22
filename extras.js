@@ -16,18 +16,6 @@ function init()
   document.getElementsByTagName('head')[0].appendChild(bbc);
   document.getElementsByTagName('head')[0].appendChild(fb);
   var forms = document.getElementsByTagName('form');
-  for(var i = 0; i < forms.length; ++i)
-  { var label = document.createElement('label');
-    label.for = 'pass' + i;
-    label.appendChild(document.createTextNode('tripcode (optional): '));
-    var input = document.createElement('input');
-    input.type = 'text';
-    input.id = 'pass' + i;
-    input.name = 'pass';
-    var br = document.createElement('br');
-    forms[i].insertBefore(br, forms[i].firstChild);
-    forms[i].insertBefore(input, forms[i].firstChild);
-    forms[i].insertBefore(label, forms[i].firstChild); }
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
   { if(divs[i].className == 'post' || divs[i].className == 'thread')

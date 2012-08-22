@@ -20,7 +20,7 @@ sub post_html($$$)
     close $postfile;
     my $read = full_path('read');
     my $trip = '';
-    if (-e "thread/$thread/posts/.$post.trip")
+    if (-e "threads/$thread/posts/.$post.trip")
     { open my $tripfile, '<', "threads/$thread/posts/.$post.trip";
       flock $tripfile, LOCK_SH;
       $trip = '<span class="trip">' . <$tripfile> . '</span>';

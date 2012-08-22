@@ -46,8 +46,8 @@ sub do_trip($)
   $salt =~ tr/:;<=>?@[\\]^_`/ABCDEFGabcdef/;
   return substr crypt($pass, $salt), -10; }
 
-sub make_thread($)
-{ my ($title) = @_;
+sub make_thread($;$)
+{ my ($title, $comment) = @_;
   my $thread = time();
   $title = clean_string($title);
   $title =~ s/\r\n/\n/g;
@@ -55,10 +55,11 @@ sub make_thread($)
   error('no title entered!') unless $title;
   error('title too long!') if length $title > 127;
   error('spam filter triggered!') if filter_check('spam.txt', $title);
-  my $len = 1 + length $comment;
-  my @ss = split "\0", `find threads/*/posts -size ${len}c -print0`;
-  my @dups = grep {!`echo $comment|diff - $_`} @ss;
-  error('duplicate post!') if @dups;
+  if($comment)
+  { my $len = 1 + length $comment;
+    my @ss = split "\0", `find threads/*/posts -size ${len}c -print0`;
+    my @dups = grep {!`echo $comment|diff - $_`} @ss;
+    error('duplicate post!') if @dups; }
   mkdir "threads/$thread";
   mkdir "threads/$thread/posts";
   open my $titlefile, '>', "threads/$thread/title";
@@ -130,7 +131,7 @@ sub build_index($)
   print $htmlfile '<div class="replyform"><form method="post" action="',
                    full_path('post.pl'), "\"><label for=\"pass_$thread\">",
                    'tripcode (optional): </label><input type="text" id="',
-                   "pass_$thread\" name=\"pass\"><br><input type=\"hidden\""
+                   "pass_$thread\" name=\"pass\"><br><input type=\"hidden\"",
                    " name=\"thread\" value=\"$thread\"><input type=\"checkbox",
                    "\" id=\"sage_$thread\" name=\"sage\" checked=\"checked\"> ",
                    "<label for=\"sage_$thread\">don't bump thread</label> ",
