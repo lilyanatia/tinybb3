@@ -27,7 +27,7 @@ RewriteRule ^trips.json$ ./trips.json.pl [L]
 <Files ????.txt>
  Deny from all
 </Files>
-<Files trip.js>
+<Files extras.js>
  Options +Includes
  AddOutputFilter INCLUDES .js
 </Files>

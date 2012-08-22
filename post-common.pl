@@ -121,7 +121,7 @@ sub build_index($)
                   "=\"stylesheet\" type=\"text/css\" href=\"",
                   full_path('style.css'), '"><link rel="alternate" type="appli',
                   'cation/atom+xml" href=', full_path("atom/$thread"), '"><scr',
-                  'ipt type="text/javascript" src="', full_path('trip.js'), '"',
+                  'ipt type="text/javascript" src="', full_path('extras.js'), '"',
                   '></script></head><body class="thread" onload="init()"><div ',
                   "class=\"thread_head\"><a href=\"read/$thread\">$title</a></",
                   'div>';
@@ -258,7 +258,7 @@ sub build_index($)
   print $indexfile "<!DOCTYPE html>\n<html><head><title>anonymous bbs</title><",
                   'link rel="stylesheet" type="text/css" href="',
                   full_path('style.css'), '"><script type="text/javascript" sr',
-                  'c="', full_path('trip.js'), '"></script></head><body class=',
+                  'c="', full_path('extras.js'), '"></script></head><body class=',
                   '"mainpage" onload="init()"><div class="thread_list"><ol>';
   for (0..$last_listed_thread)
   { my $href = $_ > 9 ? "read/$threads[$_]" : "#$threads[$_]";
