@@ -17,7 +17,6 @@ RewriteRule ^(read|json)(/\d+)/+(0*1?-0*([1-9]\d{3,})?|l0*([1-9]\d{3,})?)?$ ./$1
 RewriteRule ^(read|json)(/\d+/.*,.*)$ ./$1.pl$2 [L]
 RewriteRule ^(read|json)(/\d+/+(\d*-?\d*|l\d+))$ ./$1.pl$2 [L]
 RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
-RewriteRule ^trips.json$ ./trips.json.pl [L]
 
 <Files subject.txt>
  Header set Access-Control "allow <*>"
