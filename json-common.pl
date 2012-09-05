@@ -24,7 +24,7 @@ sub post_json($$$)
       $name .= '!' . <$tripfile>;
       flock $tripfile, LOCK_UN;
       close $tripfile; }
-    $$json_data{$post} = {"name" => $name, "now" => $time, "com" => $comment}; }}
+    $$json_data{$post + 0} = {"name" => $name, "now" => $time, "com" => $comment}; }}
 
 sub range_json($$$$)
 { my ($json_data, $thread, $start, $end) = @_;

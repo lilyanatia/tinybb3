@@ -225,9 +225,10 @@ sub build_index($)
     $gophertitle =~ s/(.{67})/$1\n/g;
     chomp $gophertitle;
     print $gophermapfile "1$gophertitle	threads/$thread\n";
-    push @jsonindex_data, { 'id' => $thread, 'title' => $title, 'created' =>
-                            $thread, 'updated' => $updated, 'length' => $posts,
-                            'bumped' => (stat "threads/$thread/title")[9] };
+    push @jsonindex_data, { 'id' => $thread + 0, 'title' => $title, 'created' =>
+                            $thread + 0, 'updated' => $updated + 0, 'length' =>
+                            $posts + 0, 'bumped' =>
+                            (stat "threads/$thread/title")[9] + 0 };
     $title =~ s/&/&amp;/g;
     $title =~ s/</&lt;/g;
     $title =~ s/>/&gt;/g;
