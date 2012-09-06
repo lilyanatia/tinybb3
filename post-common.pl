@@ -217,7 +217,7 @@ sub build_index($)
     $title = <$titlefile>;
     flock $titlefile, LOCK_UN;
     close $titlefile;
-    $updated = (stat "threads/$thread/posts")[9];
+    $updated = (stat "threads/$thread/posts/$#posts")[9];
     print $subjecttxtfile "$title<>Anonymous<><>$thread<>$posts<>Anonymous<>",
                           "$updated\n";
     $gophertitle = $title;

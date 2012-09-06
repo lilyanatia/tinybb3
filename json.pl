@@ -54,7 +54,7 @@ else
                         { 'id' => $_ + 0, 'title' => $title,
                           'created' => (stat "threads/$_/posts/1")[9] + 0,
                           'length' => scalar @posts + 0,
-                          'updated' => (stat "threads/$_/posts")[9] + 0,
+                          'updated' => (stat "threads/$_/posts/$#posts" )[9] + 0,
                           'bumped' => (stat "threads/$_/title")[9] + 0} } @threads;
   my $json_string = $json->encode(\@json_data);
   $json_string = "$jsonp($json_string)" if $jsonp;
