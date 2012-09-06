@@ -14,8 +14,6 @@ sub post_json($$$)
     my $comment = join '', <$postfile>;
     flock $postfile, LOCK_UN;
     close $postfile;
-    $comment =~ s/\\/\\\\/g;
-    $comment =~ s/"/\\"/g;
     chomp $comment;
     my $name = "Anonymous";
     if(-e "threads/$thread/posts/.$post.trip")
