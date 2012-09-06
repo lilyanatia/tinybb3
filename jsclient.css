@@ -1,13 +1,15 @@
 body { background-color: mistyrose; }
 
-#header { position: fixed; right: 0; }
+#header { border: 1px solid midnightblue; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; position: fixed; right: 0.5em; background-color: powderblue; }
 
 .posts { margin-left: 5em; }
-.post { margin: 0.5em; background-color: silver; }
 
-#threads { border-radius: 1em; overflow: hidden; }
+.post { border-radius: 0.5em; margin: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background-color: gainsboro; }
+
+#threads { border: 1px solid forestgreen; border-radius: 1em; overflow: hidden; }
 
 .thread { padding: 0.5em; background-color: lightgreen; }
+
 .thread:nth-child(odd) { background-color: honeydew; }
 
 .title { display: block; width: 100%; cursor: pointer; }
