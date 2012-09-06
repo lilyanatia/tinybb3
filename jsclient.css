@@ -10,7 +10,7 @@ body { background-color: mistyrose; }
 .thread { padding: 0.5em; background-color: lightgreen; }
 .thread:nth-child(odd) { background-color: honeydew; }
 
-.title { display: block; width: 100%; }
+.title { display: block; width: 100%; cursor: pointer; }
 
 .num { font-weight: bold; }
 

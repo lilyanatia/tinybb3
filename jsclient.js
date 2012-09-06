@@ -70,10 +70,10 @@ function show_thread(id, data)
     var url = new RegExp('(' + proto + '):[^ "<>{}|\\^~`]*', 'g');
     com = com.replace(/>/g, '&gt;');
     com = com.replace(/</g, '&lt;');
-    com = com.replace(/&gt;&gt;([0-9,-]*)/g, '<a href="">&gt;&gt;$1</a>');
+    com = com.replace(/&gt;&gt;([0-9,-]*)/g, '<a href="" onclick="return false">&gt;&gt;$1</a>');
     com = com.replace(/\n/g, '<br>');
     com = com.replace(/(^|<br>)(&gt;.*?)(<br>|$)/g, '$1<span class="quote">&gt;$2</span>$3');
-    com = com.replace(url, '<a href="$&">$&</a>');
+    com = com.replace(url, '<a target="_blank" href="$&">$&</a>');
     var name = data[i].name.replace(/^Anonymous/, '');
     posts_div.append('<div class="post"><div class="post_head">' +
                      ' <span class="num">' + i + '</span>' +
