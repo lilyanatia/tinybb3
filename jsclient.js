@@ -64,8 +64,11 @@ function close_thread(id)
 function show_thread(id, data)
 { var posts_div = $('#' + id + ' > .posts');
   posts_div.empty();
+  var posts = new Array();
   for(var i in data)
-  { var com = data[i].com;
+    posts[i] = data[i];
+  for(var i = 1; i < posts.length; ++i) if(posts[i])
+  { var com = posts[i].com;
     var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
     var url = new RegExp('(' + proto + '):[^ "<>{}|\\^~`]*', 'g');
     com = com.replace(/>/g, '&gt;');
@@ -74,10 +77,10 @@ function show_thread(id, data)
     com = com.replace(/\n/g, '<br>');
     com = com.replace(/(^|<br>)(&gt;.*?)(<br>|$)/g, '$1<span class="quote">&gt;$2</span>$3');
     com = com.replace(url, '<a target="_blank" href="$&">$&</a>');
-    var name = data[i].name.replace(/^Anonymous/, '');
+    var name = posts[i].name.replace(/^Anonymous/, '');
     posts_div.append('<div class="post"><div class="post_head">' +
                      ' <span class="num">' + i + '</span>' +
-                     ' <span class="date">' + new Date(data[i].now * 1000) + '</span>' +
+                     ' <span class="date">' + new Date(posts[i].now * 1000) + '</span>' +
                      ' <span class="name">' + name + '</span>' +
                      '</div><div class="post_body">' + com + '</div></div>'); }
   posts_div.show(); }
