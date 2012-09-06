@@ -30,7 +30,7 @@ function show_threads()
   { $('#threads').append('<div class="thread" id="' + threads[i].id + '">' +
                          ' <span class="title" ' +
                          ' onclick="toggle_thread(' + threads[i].id + ')">' +
-                         threads[i].title + '</span>' +
+                         threads[i].title + ' (' + threads[i].length + ')</span>' +
                          ' <div class="posts"></div>' +
                          '</div>');
     $('#' + threads[i].id + ' > .posts').hide();
