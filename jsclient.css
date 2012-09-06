@@ -1,0 +1,17 @@
+body { background-color: mistyrose; }
+
+#header { position: fixed; right: 0; }
+
+.posts { margin-left: 5em; }
+.post { margin: 0.5em; background-color: silver; }
+
+#threads { border-radius: 1em; overflow: hidden; }
+
+.thread { padding: 0.5em; background-color: lightgreen; }
+.thread:nth-child(odd) { background-color: honeydew; }
+
+.title { display: block; width: 100%; }
+
+.num { font-weight: bold; }
+
+.name { color: green; font-size: xx-small; }
