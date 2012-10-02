@@ -1,3 +1,10 @@
+function getPlainText(node)
+{ var out = '';
+  for(var i = 0; i < node.childNodes.length; ++i)
+  { if(node.childNodes[i].nodeName=='BR') out += '\n';
+    else out += node.childNodes[i].textContent; }
+  return out; }
+
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
   var config = <!--#include virtual="config.json"-->;
@@ -30,9 +37,9 @@ function init()
           var html_link = document.createElement('a');
           var sexp_link = document.createElement('a');
           var bbc_link = document.createElement('a');
-          html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.textContent;post.removeChild(post.firstChild);})()';
-          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.textContent);post.removeChild(post.firstChild);})()';
-          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.textContent)));post.removeChild(post.firstChild);})()';
+          html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=getPlainText(comment);post.removeChild(post.firstChild);})()';
+          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(getPlainText(comment));post.removeChild(post.firstChild);})()';
+          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(getPlainText(comment))));post.removeChild(post.firstChild);})()';
           html_link.appendChild(document.createTextNode('html'));
           sexp_link.appendChild(document.createTextNode('sexpcode'));
           bbc_link.appendChild(document.createTextNode('bbcode'));
