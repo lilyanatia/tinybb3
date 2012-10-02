@@ -30,9 +30,9 @@ function init()
           var html_link = document.createElement('a');
           var sexp_link = document.createElement('a');
           var bbc_link = document.createElement('a');
-          html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.textContent;post.removeChild(post.firstChild);return true})()';
-          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.textContent);post.removeChild(post.firstChild);return true})()';
-          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.textContent)));post.removeChild(post.firstChild);return true})()';
+          html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=comment.textContent;post.removeChild(post.firstChild);})()';
+          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(comment.textContent);post.removeChild(post.firstChild);})()';
+          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(comment.textContent)));post.removeChild(post.firstChild);})()';
           html_link.appendChild(document.createTextNode('html'));
           sexp_link.appendChild(document.createTextNode('sexpcode'));
           bbc_link.appendChild(document.createTextNode('bbcode'));
