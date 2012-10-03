@@ -54,7 +54,8 @@ sub make_thread($;$)
   $title =~ s/[\r\n]/ /g;
   error('no title entered!') unless $title;
   error('title too long!') if length $title > 127;
-  error('spam filter triggered!') if filter_check('spam.txt', $title);
+  error('spam filter triggered!') if filter_check('spam.txt', $title) or
+                                     filter_check('spam.txt', $comment);
   if($comment)
   { my $len = 1 + length $comment;
     my @ss = split "\0", `find threads/*/posts -size ${len}c -print0`;
