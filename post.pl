@@ -17,6 +17,6 @@ if($query->request_method() == 'POST')
   my $sage = $query->param('sage');
   my $comment = $query->param('comment');
   my $pass = $query->param('pass');
-  $thread = make_thread($title) unless $thread;
+  $thread = make_thread($title, $comment) unless $thread;
   add_post($thread, $sage, $comment, $pass); }
 print $query->redirect(-uri => full_path(HTML_INDEX), -status => 303);
