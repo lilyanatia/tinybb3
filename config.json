@@ -1,1 +1,1 @@
-{ enable_gplus: true, enable_fb: true }
+{ enable_gplus: false, enable_fb: false }
