@@ -8,19 +8,16 @@ function getPlainText(node)
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
   var config = <!--#include virtual="config.json"-->;
-  var sexp = document.createElement('script');
   var bbc = document.createElement('script');
   var gplus = document.createElement('script');
   var fb = document.createElement('script');
   var fbdiv = document.createElement('div');
   fbdiv.id = 'fb-root';
   document.body.insertBefore(fbdiv, document.body.firstChild);
-  bbc.type = sexp.type = gplus.type = fb.type = 'text/javascript';
-  sexp.src = base + '/sexp.js';
+  bbc.type = gplus.type = fb.type = 'text/javascript';
   bbc.src = base + '/bbcode.js';
   gplus.src = 'https://apis.google.com/js/plusone.js';
   fb.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
-  document.getElementsByTagName('head')[0].appendChild(sexp);
   document.getElementsByTagName('head')[0].appendChild(bbc);
   if(config.enable_fb) document.getElementsByTagName('head')[0].appendChild(fb);
   var forms = document.getElementsByTagName('form');
@@ -35,20 +32,15 @@ function init()
         if(post)
         { var comment = divs[i].lastChild;
           var html_link = document.createElement('a');
-          var sexp_link = document.createElement('a');
           var bbc_link = document.createElement('a');
           html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=getPlainText(comment);post.removeChild(post.firstChild);})()';
-          sexp_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parser(getPlainText(comment));post.removeChild(post.firstChild);})()';
           bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(getPlainText(comment))));post.removeChild(post.firstChild);})()';
           html_link.appendChild(document.createTextNode('html'));
-          sexp_link.appendChild(document.createTextNode('sexpcode'));
           bbc_link.appendChild(document.createTextNode('bbcode'));
           format_div = document.createElement('div');
           format_div.style.fontSize = 'xx-small';
           format_div.appendChild(document.createTextNode('formatting: '));
           format_div.appendChild(html_link);
-          format_div.appendChild(document.createTextNode(' '));
-          format_div.appendChild(sexp_link);
           format_div.appendChild(document.createTextNode(' '));
           format_div.appendChild(bbc_link);
           divs[i].insertBefore(format_div, divs[i].firstChild);
