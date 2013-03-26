@@ -23,8 +23,14 @@ textarea
 .quote { color: #060; }
 
 // stuff for sexpcode:
-.spoiler{background: #000;color: #000;}
-.spoiler:hover {color:#FFF;}
-.aa {text-align: left;font-family: IPAMonaPGothic,Mona,'MS PGothic',YOzFontAA97 !important;}
-.o{text-decoration:overline;}
-.s{text-decoration:line-through;}
+.spoiler { background: #000; color: #000; }
+.spoiler:hover { color: #fff; }
+@font-face
+{ font-family: IPAMonaPGothic2;
+  src: url('ipagp-mona.ttf') format(truetype); }
+.aa
+{ text-align: left;
+  font-family: IPAMonaPGothic, Mona, 'MS PGothic',
+               YOzFontAA97, IPAMonaPGothic2 !important; }
+.o{ text-decoration: overline; }
+.s{ text-decoration: line-through; }
