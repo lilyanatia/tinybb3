@@ -7,7 +7,6 @@ function getPlainText(node)
 
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
-  var config = <!--#include virtual="config.json"-->;
   var bbc = document.createElement('script');
   bbc.type = 'text/javascript';
   bbc.src = base + '/bbcode.js';

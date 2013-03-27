@@ -22,12 +22,11 @@ textarea
   width: 40em; } 
 .quote { color: #060; }
 
-// stuff for sexpcode:
 .spoiler { background: #000; color: #000; }
 .spoiler:hover { color: #fff; }
 @font-face
 { font-family: IPAMonaPGothic2;
-  src: url('ipagp-mona.ttf') format(truetype); }
+  src: url('ipagp-mona.ttf'); }
 .aa
 { text-align: left;
   font-family: IPAMonaPGothic, Mona, 'MS PGothic',
