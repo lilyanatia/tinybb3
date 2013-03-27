@@ -72,8 +72,9 @@ function init()
   if(config.enable_gplus)
     document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
-  { var proto = 'data|ftp|gopher|http|https|mailto|news|nntp|rtsp|sip|sips|tel|telnet|xmpp|ed2k|irc|ircs|irc6|magnet|mms|rsync|rtmp|ssh|sftp';
-    var url = new RegExp('(' + proto + '):[^ "<>{}|\\^~`]*', 'g');
+  { var url = new RegExp(
+      '[a-z][a-z0-9+.-]*:[^\\s`"<>{}()|\\^~`]*(?:\\([^\\s"<>{}()|\\^~`]+\\)|[^\\s"<>{}()|\\^~`.,;])',
+      'g');
     var tw = document.createTreeWalker(
                document.body,
                NodeFilter.SHOW_TEXT,
