@@ -1,4 +1,4 @@
-this is a (relatively) small anonymous bbs script. it probably only works right out of the box with apache, but it should be easy to figure out how to make it work with any other httpd that has something like mod_rewrite.
+this is a small anonymous bbs script. it probably only works right out of the box with apache, but it should be easy to figure out how to make it work with any other httpd that has something like mod_rewrite.
 
 make sure you edit the "RewriteBase" and "Setenv base" lines in the main .htaccess file if you're installing it somewhere other than /tinybb3.
 
