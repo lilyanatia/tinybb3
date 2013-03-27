@@ -34,7 +34,7 @@ function init()
           var html_link = document.createElement('a');
           var bbc_link = document.createElement('a');
           html_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=getPlainText(comment);post.removeChild(post.firstChild);})()';
-          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=render(parse(tokenize(getPlainText(comment))));post.removeChild(post.firstChild);})()';
+          bbc_link.href = 'javascript:(function(){var post=document.getElementById("' + divs[i].id + '");var comment=post.lastChild;comment.innerHTML=parseBBCode(getPlainText(comment));post.removeChild(post.firstChild);})()';
           html_link.appendChild(document.createTextNode('html'));
           bbc_link.appendChild(document.createTextNode('bbcode'));
           format_div = document.createElement('div');
