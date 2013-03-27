@@ -9,17 +9,9 @@ function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
   var config = <!--#include virtual="config.json"-->;
   var bbc = document.createElement('script');
-  var gplus = document.createElement('script');
-  var fb = document.createElement('script');
-  var fbdiv = document.createElement('div');
-  fbdiv.id = 'fb-root';
-  document.body.insertBefore(fbdiv, document.body.firstChild);
-  bbc.type = gplus.type = fb.type = 'text/javascript';
+  bbc.type = 'text/javascript';
   bbc.src = base + '/bbcode.js';
-  gplus.src = 'https://apis.google.com/js/plusone.js';
-  fb.src = 'http://connect.facebook.net/en_US/all.js#xfbml=1';
   document.getElementsByTagName('head')[0].appendChild(bbc);
-  if(config.enable_fb) document.getElementsByTagName('head')[0].appendChild(fb);
   var forms = document.getElementsByTagName('form');
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
@@ -50,27 +42,8 @@ function init()
             textarea.focus();
             if(textarea.value != '' && textarea.value.substr(-1) != '\n')
               textarea.value += '\n';
-            textarea.value += '>>' + post + '\n'; }; }
-        var url = base + '/' + thread + (post ? '/' + post : '');
-        var plus = document.createElement('div');
-        plus.className = 'g-plusone';
-        plus.style.display = 'inline';
-        plus.setAttribute('data-size', 'small');
-        plus.setAttribute('data-href', url);
-        head.appendChild(document.createTextNode(' '));
-        head.appendChild(plus);
-        var like = document.createElement('div');
-        like.className = 'fb-like';
-        like.setAttribute('data-href', url);
-        like.setAttribute('data-send', 'false');
-        like.setAttribute('data-layout', 'button_count');
-        like.setAttribute('data-width', '450');
-        like.setAttribute('data-show-faces', 'false');
-        head.appendChild(document.createTextNode(' '));
-        head.appendChild(like); })();}}
+            textarea.value += '>>' + post + '\n'; }; }})();}}
 
-  if(config.enable_gplus)
-    document.getElementsByTagName('head')[0].appendChild(gplus);
   if(document.createTreeWalker)
   { var url = new RegExp(
       '[a-z][a-z0-9+.-]*:[^\\s`"<>{}()|\\^~`]*(?:\\([^\\s"<>{}()|\\^~`]+\\)|[^\\s"<>{}()|\\^~`.,;])',
