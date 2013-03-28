@@ -174,7 +174,6 @@ sub build_index($)
     $comment =~ s/&/&amp;/g;
     $comment =~ s/</&lt;/g;
     $comment =~ s/>/&gt;/g;
-    $comment =~ s/&gt;&gt;((?:[0-9]*(?:-[0-9]*)?|l[0-9]*)(?:,([0-9]*(?:-[0-9]*)?|l[0-9]*))*)/<a href="$read$thread\/$1">&gt;&gt;$1<\/a>/g;
     $comment =~ s/\n/<br\/>/g;
     $comment =~ s/^(?:<br\/>)+//s;
     $comment =~ s/(?:<br\/>)+$//s;

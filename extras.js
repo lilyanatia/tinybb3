@@ -74,28 +74,4 @@ function init()
           textarea.focus();
           if(textarea.value != '' && textarea.value.substr(-1) != '\n')
             textarea.value += '\n';
-          textarea.value += '>>' + post + '\n'; }; })();}}
-
-  if(document.createTreeWalker)
-  { var url = new RegExp(
-      '[a-z][a-z0-9+.-]*:[^\\s`"<>{}()|\\^~`]*(?:\\([^\\s"<>{}()|\\^~`]+\\)|[^\\s"<>{}()|\\^~`.,;])',
-      'g');
-    var tw = document.createTreeWalker(
-               document.body,
-               NodeFilter.SHOW_TEXT,
-               function(n) { return  n.parentNode.className == 'comment' ?
-                                    NodeFilter.FILTER_ACCEPT :
-                                    NodeFilter.FILTER_SKIP; },
-               false);
-    var nodes = [];
-    while(tw.nextNode())
-      nodes.push(tw.currentNode);
-    var n;
-    for(var i = 0; n = nodes[i]; ++i)
-    { var s = document.createElement('span');
-      var t = n.nodeValue;
-      if(t.match(/^>/)) s.className='quote';
-      t = t.replace(/</g, '&lt;');
-      t = t.replace(/>/g, '&gt;');
-      s.innerHTML = t.replace(url, '<a href="$&">$&</a>');
-      n.parentNode.replaceChild(s, n); }}}
+          textarea.value += '>>' + post + '\n'; }; })();}}}
