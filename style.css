@@ -20,7 +20,7 @@ th, td { border: 1px solid black; }
 textarea
 { height: 10em;
   width: 40em; } 
-.quote { color: #060; }
+blockquote { margin: 0; color: #060; }
 
 .spoiler { background: #000; color: #000; }
 .spoiler:hover { color: #fff; }

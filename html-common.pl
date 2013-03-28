@@ -30,7 +30,7 @@ sub post_html($$$)
     $comment =~ s/</&lt;/g;
     $comment =~ s/>/&gt;/g;
     $comment =~ s/[a-z][a-z0-9+.-]*:[^\s`"<>{}()|\\^~`]*(?:\([^\s"<>{}()|\\^~`]+\)|[^\s"<>{}()|\\^~`.,;])/<a href="$&">$&<\/a>/g;
-    $comment =~ s/^(>[^>].*)$/<blockquote>$1<\/blockquote>/g;
+    $comment =~ s/^(&gt;(?!&gt;).*)$/<blockquote>$1<\/blockquote>/g;
     $comment =~ s/&gt;&gt;((?:\d*(?:-\d*)?|l\d+)(?:,(?:\d*(?:-\d*)?|l\d+))*)/<a href="$read\/$thread\/$1">&gt;&gt;$1<\/a>/g;
     $comment =~ s/\n/<br>/g;
     $comment =~ s/<\/blockquote>((?:<br>)*)<blockquote>/$1/g;
