@@ -40,10 +40,11 @@ function getPlainText(node)
     else out += node.childNodes[i].textContent; }
   return out; }
 
-function make_format_link(div, label, format_functin)
+function make_format_link(div, label, format_function)
 { var link = document.createElement('a');
   link.href = 'javascript:(function(){var post=document.getElementById("' + div.id + '");var comment=post.lastChild;comment.innerHTML=' + format_function + '(getPlainText(comment));post.removeChild(post.firstChild);})()';
-  link.appendChild(document.createTextNode(label)); }
+  link.appendChild(document.createTextNode(label));
+  return link; }
 
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
