@@ -1,6 +1,7 @@
 body.mainpage, body.subback
-{ background: #ba9 url('ba.png') fixed;
-  background-image: none, url('ba.svgz'), url('ba.png'); }
+{ background: #ba9 fixed;
+  background-image: url('ba.png');
+  background-image: image('ba.webp' format('webp'), 'ba.png'); }
 div.thread_list, div.thread, div#threadform, table
 { border: 4px double black;
   padding: 0.5em;

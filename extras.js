@@ -48,10 +48,6 @@ function make_format_link(div, label, format_function)
 
 function init()
 { var base = '<!--#echo var="base" encoding="url"-->';
-  var bbc = document.createElement('script');
-  bbc.type = 'text/javascript';
-  bbc.src = base + '/bbcode.js';
-  document.getElementsByTagName('head')[0].appendChild(bbc);
   var forms = document.getElementsByTagName('form');
   var divs = document.getElementsByTagName('div');
   for(var i = 0; i < divs.length; ++i)
