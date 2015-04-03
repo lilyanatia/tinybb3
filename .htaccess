@@ -26,7 +26,7 @@ RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
 <Files ????.txt>
  Deny from all
 </Files>
-<Files extras.js>
+<Files extras.min.js>
  Options +Includes
  AddOutputFilter INCLUDES .js
 </Files>
