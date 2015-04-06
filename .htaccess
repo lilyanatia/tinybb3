@@ -2,6 +2,10 @@ Options ExecCGI FollowSymLinks Indexes
 
 Allow from all
 
+Header always set Content-Security-Policy "block-all-mixed-content; default-src 'self'; script-src 'self' 'unsafe-inline'"
+Header always set X-Content-Security-Policy "block-all-mixed-content; default-src 'self'; script-src 'self' 'unsafe-inline'"
+Header always set X-WebKit-CSP "block-all-mixed-content; default-src 'self'; script-src 'self' 'unsafe-inline'"
+
 AddDefaultCharset utf-8
 AddOutputFilterByType DEFLATE text/html text/plain application/json application/rss+xml
 
@@ -23,10 +27,22 @@ RewriteRule ^(read|json)(/\d+)/.*$ ./$1$2 [L]
  Header set Access-Control-Allow-Origin <*>
 </Files>
 
+<Files ba.png>
+ ExpiresActive On
+ ExpiresDefault "access plus 1 week"
+</Files>
+
+<FilesMatch "\.(cs|j)s$">
+ ExpiresActive On
+ ExpiresDefault "access plus 1 week"
+ Header always set Vary "Accept-Encoding"
+</Files>
+
 <Files ????.txt>
  Deny from all
 </Files>
-<Files extras.min.js>
+
+<FilesMatch "^extras(\.min)?\.js$">
  Options +Includes
  AddOutputFilter INCLUDES .js
 </Files>
